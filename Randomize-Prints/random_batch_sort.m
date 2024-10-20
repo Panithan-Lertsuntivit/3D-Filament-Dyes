@@ -16,7 +16,7 @@ output_batches = cell([rows, columns]);
 
 % Randomizing Elements into New Batch
 for i = 1:num_elements
-    output_batches(i) = input_batch(new_idx(i));
+    output_batches(i) = initial_batch(new_idx(i));
 end
 
 end
