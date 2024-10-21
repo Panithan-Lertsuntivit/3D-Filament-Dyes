@@ -1,7 +1,7 @@
 Batch Printing at 200C 
 Batch #    Object 1        Object 2        
 1          red_200         green_200       (Bambu 3)
-2          red_200         black_200       
+2          red_200         black_200       (Bambu 2)
 3          blue_200        red_200         
 4          purple_200      black_200         
 5          blue_200        black_200       (Bambu 2)
