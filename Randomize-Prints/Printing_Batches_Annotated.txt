@@ -3,8 +3,8 @@ Batch #    Object 1        Object 2
 1          red_200         green_200       (Bambu 3)
 2          red_200         black_200       
 3          blue_200        red_200         
-4          purple_200      black_200       (Bambu 2)   
-5          blue_200        black_200       
+4          purple_200      black_200         
+5          blue_200        black_200       (Bambu 2)
 6          green_200       purple_200      (Bambu 3)
 7          red_200         green_200       
 8          black_200       blue_200        
