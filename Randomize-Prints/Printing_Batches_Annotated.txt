@@ -9,7 +9,7 @@ Batch #    Object 1        Object 2
 7          red_200         green_200       
 8          black_200       blue_200        
 9          purple_200      green_200       
-10         blue_200        purple_200      
+10         blue_200        purple_200      (Bambu 3)
 
  
 Batch Printing at 215C 
