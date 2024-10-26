@@ -1,30 +1,30 @@
-1 green_200 red_200 
-2 purple_200 blue_200 
-3 green_200 black_200 
-4 purple_200 green_200 
-5 green_200 black_200 
-6 purple_200 red_200 
-7 red_200 red_200 
-8 black_200 purple_200 
-9 blue_200 black_200 
-10 blue_200 blue_200 
-11 blue_215 black_215 
-12 red_215 purple_215 
-13 purple_215 blue_215 
-14 purple_215 black_215 
-15 green_215 blue_215 
-16 red_215 green_215 
-17 black_215 blue_215 
-18 green_215 green_215 
-19 purple_215 red_215 
-20 red_215 black_215 
-21 purple_230 purple_230 
-22 green_230 black_230 
-23 blue_230 black_230 
-24 red_230 red_230 
-25 green_230 green_230 
-26 purple_230 black_230 
-27 green_230 purple_230 
-28 blue_230 blue_230 
-29 blue_230 red_230 
-30 red_230 black_230 
+1,blue_200,green_200,
+2,red_200,red_200,
+3,purple_200,green_200,
+4,purple_200,purple_200,
+5,purple_200,black_200,
+6,black_200,red_200,
+7,green_200,green_200,
+8,red_200,blue_200,
+9,blue_200,black_200,
+10,black_200,blue_200,
+11,black_215,purple_215,
+12,blue_215,black_215,
+13,black_215,purple_215,
+14,blue_215,green_215,
+15,red_215,black_215,
+16,purple_215,red_215,
+17,green_215,blue_215,
+18,blue_215,red_215,
+19,red_215,purple_215,
+20,green_215,green_215,
+21,green_230,purple_230,
+22,red_230,purple_230,
+23,blue_230,blue_230,
+24,black_230,red_230,
+25,black_230,blue_230,
+26,black_230,red_230,
+27,green_230,black_230,
+28,blue_230,purple_230,
+29,purple_230,green_230,
+30,red_230,green_230,

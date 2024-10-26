@@ -13,11 +13,11 @@ function saveorder_csv(element_order, CSV_ID)
         objects = strsplit(element_order{i});
         num_objects = numel(objects);
 
-        fprintf(CSV_ID, '%d ', i);
+        fprintf(CSV_ID, '%d,', i);
 
         % Saving elements to the csv file one at a time
         for j = 1:num_objects
-            fprintf(CSV_ID, '%s ', objects{j});
+            fprintf(CSV_ID, '%s,', objects{j});
         end
         % Completed group of elements, preparing for next group
         fprintf(CSV_ID, '\n');
