@@ -5,7 +5,8 @@ clear; clc;
 %% Initial conditions/batches
 
 % Bambu can only print two dog bones per print/plate
-num_perplate = 2;
+% Bambu can print three 3-point bending specimen/plate
+num_perplate = 3;
 
 batches_200 = {'red_200', 'green_200', 'blue_200', 'purple_200', 'black_200';
     'red_200', 'green_200', 'blue_200', 'purple_200', 'black_200';
@@ -44,4 +45,11 @@ csvID = fopen('Printing_Order.csv', 'w');
 saveorder_csv(printing_order, csvID);
 
 
+%% Randomizing Testing Order and Saving Results 
 
+testing_order = random_test_order(printing_order, num_perplate);
+
+% Creating .csv file to save randomized testing order
+testingID = fopen('Testing_Order.csv', 'w');
+
+saveorder_csv(testing_order, testingID);
