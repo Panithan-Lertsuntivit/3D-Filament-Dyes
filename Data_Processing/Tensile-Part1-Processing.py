@@ -38,12 +38,14 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         df['Strain'] = df['Extension [mm]'] / 203.2  # Divide by 203.2 mm
 
         '''Saving Stress and Strain Data to combined DataFrame'''
-        combined_data[f"Stress_{i + 1} [MPa]"] = df['Stress [MPa]']
+        combined_data[f"Stress_{i + 1}"] = df['Stress [MPa]']
         combined_data[f"Strain_{i + 1}"] = df['Strain']
 
     # Adding a description to the Comment column
     combined_data["Comment"] = ''
     combined_data.loc[1, "Comment"] = description
+    combined_data.loc[2, "Comment"] = f"Stress units of [MPa]"
+    combined_data.loc[3, "Comment"] = f"Strain unit-less"
 
     # Save the combined data to a CSV file, in Processed-Tensile-Data
     output_file = f"Processed-Tensile-Data/{combination}_processed.csv"
