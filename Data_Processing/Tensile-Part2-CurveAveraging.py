@@ -17,13 +17,18 @@ def split_at_UTS(stress_values, strain_values):
     rising_strain = strain_values[0:UTS_idx+1]
     falling_strain = strain_values[UTS_idx: ]
 
-    return rising_stress, falling_stress, rising_strain, falling_strain
+    # Need to output relative falling stress/strain
+    relative_falling_stress = falling_stress - rising_stress[-1]
+    relative_falling_strain = falling_strain - rising_strain[-1]
+
+    return (rising_stress, relative_falling_stress, rising_strain,
+            relative_falling_strain)
 
 
 '''----- End of Functions --------------------------------------------------'''
 
 # Some testing of code first
-file_location = f"Processed-Tensile-Data/Black_200_processed.csv"
+file_location = f"Processed-Tensile-Data/Black_230_processed.csv"
 
 df = pd.read_csv(file_location)
 header_names = df.columns.tolist()
@@ -43,12 +48,7 @@ for i in range(num_rows):
     stress_curves.append(stress)
     strain_curves.append(strain)
 
-# # Combining Curves
-# stress_curves = [stress_1, stress_2, stress_3, stress_4]
-# strain_curves = [strain_1, strain_2, strain_3, strain_4]
-
-
-'''Plotting the original curves'''
+'''Plotting the original curves ------------------------------------------'''
 # Plotting just the original curves
 # Plotting
 plt.figure(figsize=(10, 6))
@@ -64,55 +64,86 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-'''End of plotting the original curves'''
+'''End of plotting the original curves -----------------------------------'''
 
+''' Splitting the stress/strain curves at the UTS ------------------------'''
 # Splitting stress/strain curves at the UTS and finding the average UTS
 rising_stress_curves = []
-falling_stress_curves = []
+relative_falling_stress_curves = []
 
 rising_strain_curves = []
-falling_strain_curves = []
+relative_falling_strain_curves = []
 
 uts_values = []
 num_rising_elements = 0
 num_falling_elements = 0
+stress_drops_after_UTS = []
 
 for i, stresses in enumerate(stress_curves):
     uts_values.append(max(stresses))
 
     # Calling split_at_UTS function
-    [rising_stresses, falling_stresses, rising_strains,
-        falling_strains] = split_at_UTS(stresses, strain_curves[i])
+    [rising_stresses, relative_falling_stresses, rising_strains,
+        relative_falling_strains] = split_at_UTS(stresses, strain_curves[i])
 
+    # Keeping track of elements
     if len(rising_stresses) > num_rising_elements:
         num_rising_elements = len(rising_stresses)
 
-    if len(falling_stresses) > num_falling_elements:
-        num_falling_elements = len(falling_stresses)
+    if len(relative_falling_stresses) > num_falling_elements:
+        num_falling_elements = len(relative_falling_stresses)
+
+    current_stress_drop = relative_falling_stresses[-1]
+    stress_drops_after_UTS.append(current_stress_drop)
 
     rising_stress_curves.append(rising_stresses)
-    falling_stress_curves.append(falling_stresses)
+    relative_falling_stress_curves.append(relative_falling_stresses)
 
     rising_strain_curves.append(rising_strains)
-    falling_strain_curves.append(falling_strains)
+    relative_falling_strain_curves.append(relative_falling_strains)
 
+# Calculating Averages - Used in interpolation
 average_uts = np.mean(uts_values)
-# print(average_uts)
-# curve = np.array(rising_stress_curves[0])
-# print(curve)
+average_stress_drop = np.mean(stress_drops_after_UTS)
 
+''' Interpolation of the rising curve up to the UTS -------------------'''
 # Interpolation for the rising curves up to the average uts
 rising_stress_axis = np.linspace(0, average_uts, 2*num_rising_elements)
 
-interpolated_strain_axes = []
+interpolated_strain_axes_rising = []
 for i in range(len(rising_stress_curves)):
-    interpolated_strains = np.interp(rising_stress_axis, rising_stress_curves[i], rising_strain_curves[i])
-    interpolated_strain_axes.append(interpolated_strains)
+    interpolated_strains_rising = np.interp(rising_stress_axis,
+                                            rising_stress_curves[i],
+                                            rising_strain_curves[i])
+    interpolated_strain_axes_rising.append(interpolated_strains_rising)
 
-average_strain_curve = np.mean(interpolated_strain_axes, axis=0)
+average_strain_curve_rising = np.mean(interpolated_strain_axes_rising, axis=0)
 
-print(average_strain_curve)
+''' Interpolation of the relative falling curve after UTS ------------------'''
+relative_falling_stress_axis = np.linspace(0, average_stress_drop,
+                                           2*num_falling_elements)
 
+interpolated_strain_axes_falling = []
+for i in range(len(relative_falling_stress_curves)):
+    interpolated_strains_falling = np.interp(relative_falling_stress_axis,
+                                             relative_falling_stress_curves[i],
+                                             relative_falling_strain_curves[i])
+    interpolated_strain_axes_falling.append(interpolated_strains_falling)
+
+relative_average_strain_curve_falling \
+    = np.mean(interpolated_strain_axes_falling, axis=0)
+
+falling_stress_axis = relative_falling_stress_axis + average_uts
+
+average_strain_curve_falling = (relative_average_strain_curve_falling +
+                                average_strain_curve_rising[-1])
+
+''' Preparing to plot average curve - ---------------------------------'''
+average_stress_axis = rising_stress_axis.tolist() + falling_stress_axis.tolist()
+average_strain_axis = (average_strain_curve_rising.tolist()
+                       + average_strain_curve_falling.tolist())
+
+''' Plotting the original curves with the average curve ----------------'''
 # Plotting
 plt.figure(figsize=(10, 6))
 
@@ -121,7 +152,8 @@ for i in range(len(stress_curves)):
     plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
 
 # Plot the average rising curve
-plt.plot(average_strain_curve, rising_stress_axis, label="Average Curve (Rising)", linewidth=2, color="black", linestyle="--")
+plt.plot(average_strain_axis, average_stress_axis,
+         label="Average Curve (Rising)", linewidth=2, color="black", linestyle="--")
 
 # Labeling
 plt.title("Stress-Strain Curves and Average Curve")
@@ -130,3 +162,5 @@ plt.ylabel("Stress [MPa]")
 plt.legend()
 plt.grid(True)
 plt.show()
+
+''' End of Plotting -----------------------------------------------------'''
