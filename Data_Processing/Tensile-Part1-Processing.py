@@ -5,18 +5,18 @@ import pandas as pd  # reading and processing data
 
 
 # Function to process and save data for a specific combination
-def process_and_save_data(folder_location, combination, sequences):
+def process_and_save_data(folder_location, combination, sequence_nums):
     combined_data = pd.DataFrame()  # Create empty DataFrame to store combined data
 
     # Creating a Description
     color_temp = f"{combination.replace('-', ' ')}"
-    sequence_list = str(sequences)
+    sequence_list = str(sequence_nums)
     # Getting rid of the brackets in sequence_list
     sequence_numbers = sequence_list.replace('[', '').replace(']', '')
 
     description = f"{color_temp}, Seq: {sequence_numbers}"
 
-    for i, seq in enumerate(sequences):
+    for i, seq in enumerate(sequence_nums):
         file_path = f"{folder_location}/Sequence_{seq}.csv"
 
         '''Reading CSV and Formatting'''
