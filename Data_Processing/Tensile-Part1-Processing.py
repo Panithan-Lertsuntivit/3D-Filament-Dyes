@@ -5,6 +5,11 @@ import pandas as pd  # reading and processing data
 # Function to process and save data for a specific combination
 def process_and_save_data(folder_location, combination, sequence_nums):
     combined_data = pd.DataFrame()  # Create empty DataFrame to store combined data
+    # Pre Initialize Data Frame headers
+    combined_data['Curve_Number'] = ''
+    combined_data['Stress'] = ''
+    combined_data['Strain'] = ''
+    combined_data['Comment'] = ''
 
     # Creating a Description
     color_temp = f"{combination.replace('-', ' ')}"
@@ -15,7 +20,10 @@ def process_and_save_data(folder_location, combination, sequence_nums):
     description = f"{color_temp}, Seq: {sequence_numbers}"
 
     for i, seq in enumerate(sequence_nums):
+        j = i + 1       # Shifting it up by 1 so j will start at 1 and not 0
+
         file_path = f"{folder_location}/Sequence_{seq}.csv"
+        curve_name = f"Curve_{j}"
 
         '''Reading CSV and Formatting'''
         # Read the CSV file, actual data starts at row 6 (so skip 5 rows)
@@ -34,18 +42,16 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         df['Load [N]'] = pd.to_numeric(df['Load [N]'], errors='coerce')
 
         '''Calculating Stress [MPa] and Strain'''
-        df['Stress [MPa]'] = df['Load [N]'] / 3.175  # Divide by 3.175 mm^2
-        df['Strain'] = df['Extension [mm]'] / 203.2  # Divide by 203.2 mm
+        stress = df['Load [N]'].to_numpy() / 3.175      # Divide by 3.175 mm^2
+        strain = df['Extension [mm]'].to_numpy() / 203.2  # Divide by 203.2 mm
 
         '''Saving Stress and Strain Data to combined DataFrame'''
-        combined_data[f"Stress_{i + 1}"] = df['Stress [MPa]']
-        combined_data[f"Strain_{i + 1}"] = df['Strain']
+        combined_data.loc[j, 'Curve_Number'] = curve_name
+        combined_data.loc[j, 'Stress'] = f'{stress.tolist()}'
+        combined_data.loc[j, 'Strain'] = f'{strain.tolist()}'
 
-    # Adding a description to the Comment column
-    combined_data["Comment"] = ''
-    combined_data.loc[1, "Comment"] = description
-    combined_data.loc[2, "Comment"] = f"Stress units of [MPa]"
-    combined_data.loc[3, "Comment"] = f"Strain unit-less"
+    # Adding a description
+    combined_data.loc[1, 'Comment'] = description
 
     # Save the combined data to a CSV file, in Processed-Tensile-Data
     output_file = f"Processed-Tensile-Data/{combination}_processed.csv"

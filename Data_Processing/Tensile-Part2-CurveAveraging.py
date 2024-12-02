@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import ast
 
 '''----- Beginning of Functions --------------------------------------------'''
 def split_at_UTS(stress_values, strain_values):
@@ -26,22 +27,44 @@ file_location = f"Processed-Tensile-Data/Black_200_processed.csv"
 
 df = pd.read_csv(file_location)
 header_names = df.columns.tolist()
+num_rows = len(df.index)
 
-stress_1 = df[f'{header_names[0]}'].to_numpy()
-strain_1 = df[f'{header_names[1]}'].to_numpy()
+stress_curves = []
+strain_curves = []
 
-stress_2 = df[f'{header_names[2]}'].to_numpy()
-strain_2 = df[f'{header_names[3]}'].to_numpy()
+for i in range(num_rows):
+    stress = df.loc[i, f'{header_names[1]}']
+    strain = df.loc[i, f'{header_names[2]}']
 
-stress_3 = df[f'{header_names[4]}'].to_numpy()
-strain_3 = df[f'{header_names[5]}'].to_numpy()
+    # Convert to string to list (ast.literal_eval) then convert to np array
+    stress = np.array(ast.literal_eval(stress))
+    strain = np.array(ast.literal_eval(strain))
 
-stress_4 = df[f'{header_names[6]}'].to_numpy()
-strain_4 = df[f'{header_names[7]}'].to_numpy()
+    stress_curves.append(stress)
+    strain_curves.append(strain)
 
-# Combining Curves
-stress_curves = [stress_1, stress_2, stress_3, stress_4]
-strain_curves = [strain_1, strain_2, strain_3, strain_4]
+# # Combining Curves
+# stress_curves = [stress_1, stress_2, stress_3, stress_4]
+# strain_curves = [strain_1, strain_2, strain_3, strain_4]
+
+
+'''Plotting the original curves'''
+# Plotting just the original curves
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot original stress-strain curves
+for i in range(len(stress_curves)):
+    plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
+
+plt.title("Stress-Strain Curves")
+plt.xlabel("Strain")
+plt.ylabel("Stress [MPa]")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+'''End of plotting the original curves'''
 
 # Splitting stress/strain curves at the UTS and finding the average UTS
 rising_stress_curves = []
@@ -74,16 +97,36 @@ for i, stresses in enumerate(stress_curves):
     falling_strain_curves.append(falling_strains)
 
 average_uts = np.mean(uts_values)
-print(average_uts)
-curve = np.array(rising_stress_curves[0])
-print(curve)
+# print(average_uts)
+# curve = np.array(rising_stress_curves[0])
+# print(curve)
 
-# Interpolation for the rising curves
+# Interpolation for the rising curves up to the average uts
 rising_stress_axis = np.linspace(0, average_uts, 2*num_rising_elements)
 
-# # Next
-# aligned_strains_curves = []
-# for i in range(len(stress_curves)):
-#     aligned_strains = np.interp(common_stress_axis, stress_curves[i], strain_curves[i])
-#     aligned_strains_curves.append(aligned_strains)
+interpolated_strain_axes = []
+for i in range(len(rising_stress_curves)):
+    interpolated_strains = np.interp(rising_stress_axis, rising_stress_curves[i], rising_strain_curves[i])
+    interpolated_strain_axes.append(interpolated_strains)
 
+average_strain_curve = np.mean(interpolated_strain_axes, axis=0)
+
+print(average_strain_curve)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot original stress-strain curves
+for i in range(len(stress_curves)):
+    plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
+
+# Plot the average rising curve
+plt.plot(average_strain_curve, rising_stress_axis, label="Average Curve (Rising)", linewidth=2, color="black", linestyle="--")
+
+# Labeling
+plt.title("Stress-Strain Curves and Average Curve")
+plt.xlabel("Strain")
+plt.ylabel("Stress [MPa]")
+plt.legend()
+plt.grid(True)
+plt.show()
