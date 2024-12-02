@@ -1,9 +1,7 @@
-# Script is called [].py and is used for testing
+# Script is called Tensile-Part1-Processing.py
 import pandas as pd  # reading and processing data
 
 '''----- Beginning of Functions ---------------------------------------------'''
-
-
 # Function to process and save data for a specific combination
 def process_and_save_data(folder_location, combination, sequence_nums):
     combined_data = pd.DataFrame()  # Create empty DataFrame to store combined data
