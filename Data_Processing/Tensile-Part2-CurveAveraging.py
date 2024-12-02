@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import ast
+from numpy.polynomial import Polynomial
 
 '''----- Beginning of Functions --------------------------------------------'''
 def split_at_UTS(stress_values, strain_values):
@@ -48,7 +49,7 @@ for i in range(num_rows):
     stress_curves.append(stress)
     strain_curves.append(strain)
 
-'''Plotting the original curves ------------------------------------------'''
+''' Plotting the original curves ------------------------------------------'''
 # Plotting just the original curves
 # Plotting
 plt.figure(figsize=(10, 6))
@@ -64,7 +65,7 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-'''End of plotting the original curves -----------------------------------'''
+''' End of plotting the original curves -----------------------------------'''
 
 ''' Splitting the stress/strain curves at the UTS ------------------------'''
 # Splitting stress/strain curves at the UTS and finding the average UTS
@@ -108,7 +109,7 @@ average_stress_drop = np.mean(stress_drops_after_UTS)
 
 ''' Interpolation of the rising curve up to the UTS -------------------'''
 # Interpolation for the rising curves up to the average uts
-rising_stress_axis = np.linspace(0, average_uts, 2*num_rising_elements)
+rising_stress_axis = np.linspace(0, average_uts, num_rising_elements)
 
 interpolated_strain_axes_rising = []
 for i in range(len(rising_stress_curves)):
@@ -121,7 +122,7 @@ average_strain_curve_rising = np.mean(interpolated_strain_axes_rising, axis=0)
 
 ''' Interpolation of the relative falling curve after UTS ------------------'''
 relative_falling_stress_axis = np.linspace(0, average_stress_drop,
-                                           2*num_falling_elements)
+                                           num_falling_elements)
 
 interpolated_strain_axes_falling = []
 for i in range(len(relative_falling_stress_curves)):
@@ -149,11 +150,11 @@ plt.figure(figsize=(10, 6))
 
 # Plot original stress-strain curves
 for i in range(len(stress_curves)):
-    plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
+    plt.plot(strain_curves[i], stress_curves[i], label=f"Test Curve {i+1}")
 
 # Plot the average rising curve
 plt.plot(average_strain_axis, average_stress_axis,
-         label="Average Curve (Rising)", linewidth=2, color="black", linestyle="--")
+         label="Average Curve", linewidth=2, color="black", linestyle="--")
 
 # Labeling
 plt.title("Stress-Strain Curves and Average Curve")

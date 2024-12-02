@@ -42,8 +42,8 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         df['Load [N]'] = pd.to_numeric(df['Load [N]'], errors='coerce')
 
         '''Calculating Stress [MPa] and Strain'''
-        stress = df['Load [N]'].to_numpy() / 3.175      # Divide by 3.175 mm^2
-        strain = df['Extension [mm]'].to_numpy() / 203.2  # Divide by 203.2 mm
+        stress = df['Load [N]'].to_numpy() / 80.645     # Divide by 80.645 mm^2
+        strain = df['Extension [mm]'].to_numpy() / 127  # Divide by 127 mm
 
         '''Saving Stress and Strain Data to combined DataFrame'''
         combined_data.loc[j, 'Curve_Number'] = curve_name
