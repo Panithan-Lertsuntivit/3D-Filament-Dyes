@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import ast
-from numpy.polynomial import Polynomial
+from scipy.signal import savgol_filter
 
 '''----- Beginning of Functions --------------------------------------------'''
 def split_at_UTS(stress_values, strain_values):
@@ -13,10 +13,10 @@ def split_at_UTS(stress_values, strain_values):
 
     # Splitting the arrays at the UTS (UTS value goes to rising trend)
     rising_stress = stress_values[0:UTS_idx+1]
-    falling_stress = stress_values[UTS_idx: ]
+    falling_stress = stress_values[UTS_idx-1: ]
 
     rising_strain = strain_values[0:UTS_idx+1]
-    falling_strain = strain_values[UTS_idx: ]
+    falling_strain = strain_values[UTS_idx-1: ]
 
     # Need to output relative falling stress/strain
     relative_falling_stress = falling_stress - rising_stress[-1]
@@ -50,20 +50,20 @@ for i in range(num_rows):
     strain_curves.append(strain)
 
 ''' Plotting the original curves ------------------------------------------'''
-# Plotting just the original curves
-# Plotting
-plt.figure(figsize=(10, 6))
-
-# Plot original stress-strain curves
-for i in range(len(stress_curves)):
-    plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
-
-plt.title("Stress-Strain Curves")
-plt.xlabel("Strain")
-plt.ylabel("Stress [MPa]")
-plt.legend()
-plt.grid(True)
-plt.show()
+# # Plotting just the original curves
+# # Plotting
+# plt.figure(figsize=(10, 6))
+#
+# # Plot original stress-strain curves
+# for i in range(len(stress_curves)):
+#     plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
+#
+# plt.title("Stress-Strain Curves")
+# plt.xlabel("Strain")
+# plt.ylabel("Stress [MPa]")
+# plt.legend()
+# plt.grid(True)
+# plt.show()
 
 ''' End of plotting the original curves -----------------------------------'''
 
