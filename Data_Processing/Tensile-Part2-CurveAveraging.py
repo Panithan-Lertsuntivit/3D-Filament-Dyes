@@ -7,14 +7,17 @@ import ast
 '''----- Beginning of Functions --------------------------------------------'''
 def stress_strain_from_csv(filelocation):
 
+    # Initialize arrays
     array_stresses = []
     array_strains = []
 
+    # Reading csv file
     data_frame = pd.read_csv(filelocation)
     header_names = data_frame.columns.tolist()
     num_rows = len(data_frame.index)
 
     for j in range(num_rows):
+        # Extracting stress/strain information and then saving them to arrays
         stress = data_frame.loc[j, f'{header_names[1]}']
         strain = data_frame.loc[j, f'{header_names[2]}']
 
@@ -27,17 +30,18 @@ def stress_strain_from_csv(filelocation):
 
     return array_stresses, array_strains
 
-def split_at_UTS(stress_values, strain_values):
+
+def split_at_uts(stress_values, strain_values):
 
     # Finding the UTS index
-    UTS_idx = np.argmax(stress_values)
+    uts_idx = np.argmax(stress_values)
 
     # Splitting the arrays at the UTS (UTS value goes to rising trend)
-    rising_stress = stress_values[0:UTS_idx+1]
-    falling_stress = stress_values[UTS_idx+2: ]
+    rising_stress = stress_values[0:uts_idx+1]
+    falling_stress = stress_values[uts_idx+2: ]
 
-    rising_strain = strain_values[0:UTS_idx+1]
-    falling_strain = strain_values[UTS_idx+2: ]
+    rising_strain = strain_values[0:uts_idx+1]
+    falling_strain = strain_values[uts_idx+2: ]
 
     # Need to output relative falling stress/strain
     relative_falling_stress = falling_stress - rising_stress[-1]
@@ -73,7 +77,7 @@ for i, stresses in enumerate(stress_curves):
 
     # Calling split_at_UTS function
     [rising_stresses, relative_falling_stresses, rising_strains,
-        relative_falling_strains] = split_at_UTS(stresses, strain_curves[i])
+        relative_falling_strains] = split_at_uts(stresses, strain_curves[i])
 
     # Keeping track of elements
     if len(rising_stresses) > num_rising_elements:
