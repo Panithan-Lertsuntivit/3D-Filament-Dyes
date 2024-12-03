@@ -120,14 +120,14 @@ processed_file_names = [
     "Black_230_processed.csv",
 ]
 
-temp_file_names = [# Red Color Combinations
-    "Red_200_processed.csv",
-    "Red_215_processed.csv",
-    "Red_230_processed.csv",
-]
+# temp_file_names = [# Red Color Combinations
+#     "Red_200_processed.csv",
+#     # "Red_215_processed.csv",
+#     # "Red_230_processed.csv",
+# ]
 
 # Main For loop
-for file_name in temp_file_names:
+for file_name in processed_file_names:
     folder_name = f"Processed-Tensile-Data"
 
     # Creating the file location
@@ -198,14 +198,16 @@ for file_name in temp_file_names:
                            + average_strain_curve_falling.tolist())
 
     ''' Plotting - Original Curves with Average Curve - - - - - - - - - - - '''
-    plt.figure(figsize=(10, 6))
-
+    # Establishing save paths first
+    save_folder = "Average-Tensile-Graphs"
     simple_description = file_name.replace('_processed.csv', 'C')
-
     description = (simple_description.replace('C', '°C')
                    .replace('_', ' Filament at '))
-
     graph_description = f"Stress-Strain Curves for {description}"
+    png_save_path = f"{save_folder}/{simple_description}.png"
+    csv_save_path = f"{save_folder}/Average_{simple_description}.csv"
+
+    plt.figure(figsize=(10, 6))
 
     # Plot original stress-strain curves
     for i in range(len(stress_curves)):
@@ -222,12 +224,24 @@ for file_name in temp_file_names:
     plt.ylabel("Stress [MPa]")
     plt.legend()
     plt.grid(True)
-    plt.show()
 
     ''' Save plot and average data points to a folder - - - - - - - - - - - '''
-    save_folder = "Average-Tensile-Graphs"
-    save_path = f"{save_folder}/{simple_description}.png"
+    plt.savefig(png_save_path, dpi=600)
 
-    plt.savefig(save_path, dpi=600, bbox_inches='tight')
+    # Saving the average curve data points
+    # Reshaping list to be a vertical array first
+    average_stress = np.array(average_stress_axis).reshape(-1, 1)
+    average_strain = np.array(average_strain_axis).reshape(-1, 1)
+
+    average_data = pd.DataFrame(average_stress, columns=['Stress'])
+    average_data['Strain'] = average_strain
+
+    average_data.to_csv(csv_save_path, index=False)
+    print(f"Saved results to: {csv_save_path}")
+
+    # plt.show should go after saving the plot, because it clears it
+    plt.show()
+    # plt.close()
+
 
 
