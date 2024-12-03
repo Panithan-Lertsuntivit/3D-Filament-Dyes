@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import ast
 
 '''----- Beginning of Functions --------------------------------------------'''
+
+
 def stress_strain_from_csv(filelocation):
 
     # Initialize arrays
@@ -29,6 +31,39 @@ def stress_strain_from_csv(filelocation):
         array_strains.append(strain)
 
     return array_stresses, array_strains
+
+
+def avg_uts_stressdrop_with_num_elements(array_stresses, array_strains):
+
+    ultimate_tensile_stresses = []
+    stress_drops_after_UTS = []
+    elements_rise = 0
+    elements_fall = 0
+
+    for j, stresses in enumerate(array_stresses):
+        # Finding the UTS and its index
+        ultimate_tensile_stresses.append(max(stresses))
+        uts_idx = np.argmax(stresses)
+
+        # Splitting the arrays at the UTS (UTS value goes to rising trend)
+        rising_stress = stresses[0:uts_idx + 1]
+        falling_stress = stresses[uts_idx + 2:]
+
+        # Keeping track of elements
+        if len(rising_stress) > elements_rise:
+            elements_rise = len(rising_stress)
+
+        if len(falling_stress) > elements_fall:
+            elements_fall = len(falling_stress)
+
+        current_stress_drop = falling_stress[-1] - rising_stress[-1]
+        stress_drops_after_UTS.append(current_stress_drop)
+
+    # Calculating Averages - Used in interpolation
+    average_uts = np.mean(ultimate_tensile_stresses)
+    average_stress_drop = np.mean(stress_drops_after_UTS)
+
+    return average_uts, average_stress_drop, elements_rise, elements_fall
 
 
 def split_at_uts(stress_values, strain_values):
@@ -59,6 +94,11 @@ file_location = f"Processed-Tensile-Data/Black_230_processed.csv"
 ''' Call function to read data from csv file to get stress and strain curves '''
 [stress_curves, strain_curves] = stress_strain_from_csv(file_location)
 
+''' Call function to get average uts, stress drop and elements ----'''
+[avg_uts, avg_stressdrop, num_element_rise, num_element_fall] \
+    = avg_uts_stressdrop_with_num_elements(stress_curves, strain_curves)
+
+
 ''' Splitting the stress/strain curves at the UTS ------------------------'''
 # Splitting stress/strain curves at the UTS and finding the average UTS
 rising_stress_curves = []
@@ -67,27 +107,10 @@ relative_falling_stress_curves = []
 rising_strain_curves = []
 relative_falling_strain_curves = []
 
-uts_values = []
-num_rising_elements = 0
-num_falling_elements = 0
-stress_drops_after_UTS = []
-
 for i, stresses in enumerate(stress_curves):
-    uts_values.append(max(stresses))
-
     # Calling split_at_UTS function
     [rising_stresses, relative_falling_stresses, rising_strains,
         relative_falling_strains] = split_at_uts(stresses, strain_curves[i])
-
-    # Keeping track of elements
-    if len(rising_stresses) > num_rising_elements:
-        num_rising_elements = len(rising_stresses)
-
-    if len(relative_falling_stresses) > num_falling_elements:
-        num_falling_elements = len(relative_falling_stresses)
-
-    current_stress_drop = relative_falling_stresses[-1]
-    stress_drops_after_UTS.append(current_stress_drop)
 
     rising_stress_curves.append(rising_stresses)
     relative_falling_stress_curves.append(relative_falling_stresses)
@@ -95,13 +118,10 @@ for i, stresses in enumerate(stress_curves):
     rising_strain_curves.append(rising_strains)
     relative_falling_strain_curves.append(relative_falling_strains)
 
-# Calculating Averages - Used in interpolation
-average_uts = np.mean(uts_values)
-average_stress_drop = np.mean(stress_drops_after_UTS)
 
 ''' Interpolation of the rising curve up to the UTS -------------------'''
 # Interpolation for the rising curves up to the average uts
-rising_stress_axis = np.linspace(0, average_uts, num_rising_elements)
+rising_stress_axis = np.linspace(0, avg_uts, num_element_rise)
 
 interpolated_strain_axes_rising = []
 for i in range(len(rising_stress_curves)):
@@ -113,8 +133,8 @@ for i in range(len(rising_stress_curves)):
 average_strain_curve_rising = np.mean(interpolated_strain_axes_rising, axis=0)
 
 ''' Interpolation of the relative falling curve after UTS ------------------'''
-relative_falling_stress_axis = np.linspace(0, average_stress_drop,
-                                           num_falling_elements)
+relative_falling_stress_axis = np.linspace(0, avg_stressdrop,
+                                           num_element_fall)
 
 interpolated_strain_axes_falling = []
 for i in range(len(relative_falling_stress_curves)):
@@ -126,7 +146,7 @@ for i in range(len(relative_falling_stress_curves)):
 relative_average_strain_curve_falling \
     = np.mean(interpolated_strain_axes_falling, axis=0)
 
-falling_stress_axis = relative_falling_stress_axis[0:-2] + average_uts
+falling_stress_axis = relative_falling_stress_axis[0:-2] + avg_uts
 
 average_strain_curve_falling = (relative_average_strain_curve_falling[0:-2] +
                                 average_strain_curve_rising[-1])
