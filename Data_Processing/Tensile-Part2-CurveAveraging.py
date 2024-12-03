@@ -3,9 +3,30 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import ast
-from scipy.signal import savgol_filter
 
 '''----- Beginning of Functions --------------------------------------------'''
+def stress_strain_from_csv(filelocation):
+
+    array_stresses = []
+    array_strains = []
+
+    data_frame = pd.read_csv(filelocation)
+    header_names = data_frame.columns.tolist()
+    num_rows = len(data_frame.index)
+
+    for j in range(num_rows):
+        stress = data_frame.loc[j, f'{header_names[1]}']
+        strain = data_frame.loc[j, f'{header_names[2]}']
+
+        # Convert to string to list (ast.literal_eval) then convert to np array
+        stress = np.array(ast.literal_eval(stress))
+        strain = np.array(ast.literal_eval(strain))
+
+        array_stresses.append(stress)
+        array_strains.append(strain)
+
+    return array_stresses, array_strains
+
 def split_at_UTS(stress_values, strain_values):
 
     # Finding the UTS index
@@ -13,10 +34,10 @@ def split_at_UTS(stress_values, strain_values):
 
     # Splitting the arrays at the UTS (UTS value goes to rising trend)
     rising_stress = stress_values[0:UTS_idx+1]
-    falling_stress = stress_values[UTS_idx-1: ]
+    falling_stress = stress_values[UTS_idx+2: ]
 
     rising_strain = strain_values[0:UTS_idx+1]
-    falling_strain = strain_values[UTS_idx-1: ]
+    falling_strain = strain_values[UTS_idx+2: ]
 
     # Need to output relative falling stress/strain
     relative_falling_stress = falling_stress - rising_stress[-1]
@@ -31,41 +52,8 @@ def split_at_UTS(stress_values, strain_values):
 # Some testing of code first
 file_location = f"Processed-Tensile-Data/Black_230_processed.csv"
 
-df = pd.read_csv(file_location)
-header_names = df.columns.tolist()
-num_rows = len(df.index)
-
-stress_curves = []
-strain_curves = []
-
-for i in range(num_rows):
-    stress = df.loc[i, f'{header_names[1]}']
-    strain = df.loc[i, f'{header_names[2]}']
-
-    # Convert to string to list (ast.literal_eval) then convert to np array
-    stress = np.array(ast.literal_eval(stress))
-    strain = np.array(ast.literal_eval(strain))
-
-    stress_curves.append(stress)
-    strain_curves.append(strain)
-
-''' Plotting the original curves ------------------------------------------'''
-# # Plotting just the original curves
-# # Plotting
-# plt.figure(figsize=(10, 6))
-#
-# # Plot original stress-strain curves
-# for i in range(len(stress_curves)):
-#     plt.plot(strain_curves[i], stress_curves[i], label=f"Trial {i+1} Curve")
-#
-# plt.title("Stress-Strain Curves")
-# plt.xlabel("Strain")
-# plt.ylabel("Stress [MPa]")
-# plt.legend()
-# plt.grid(True)
-# plt.show()
-
-''' End of plotting the original curves -----------------------------------'''
+''' Call function to read data from csv file to get stress and strain curves '''
+[stress_curves, strain_curves] = stress_strain_from_csv(file_location)
 
 ''' Splitting the stress/strain curves at the UTS ------------------------'''
 # Splitting stress/strain curves at the UTS and finding the average UTS
@@ -134,9 +122,9 @@ for i in range(len(relative_falling_stress_curves)):
 relative_average_strain_curve_falling \
     = np.mean(interpolated_strain_axes_falling, axis=0)
 
-falling_stress_axis = relative_falling_stress_axis + average_uts
+falling_stress_axis = relative_falling_stress_axis[0:-2] + average_uts
 
-average_strain_curve_falling = (relative_average_strain_curve_falling +
+average_strain_curve_falling = (relative_average_strain_curve_falling[0:-2] +
                                 average_strain_curve_rising[-1])
 
 ''' Preparing to plot average curve - ---------------------------------'''
