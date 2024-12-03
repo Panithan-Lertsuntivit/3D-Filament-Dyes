@@ -1,4 +1,4 @@
-# Script is called Tensile-Part2-CurveAveraging.py
+# Script is called Tensile-Part3-CurveAveraging.py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
