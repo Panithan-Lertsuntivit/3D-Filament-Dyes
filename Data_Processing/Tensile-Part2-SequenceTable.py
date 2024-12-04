@@ -79,8 +79,8 @@ processed_file_names = [
 
 temp_file_names = [
     # Red Color Combinations
-    "Red_200_processed.csv",
-    "Red_215_processed.csv",
+    # "Red_200_processed.csv",
+    # "Red_215_processed.csv",
     "Red_230_processed.csv",
 ]
 
@@ -90,6 +90,7 @@ sequence_table['Sequence_Number'] = ''
 sequence_table['UTS'] = ''
 sequence_table['Young_Modulus'] = ''
 sequence_table['Toughness'] = ''
+sequence_table['Color/Temperature'] = ''
 
 seq_counter = 1
 
