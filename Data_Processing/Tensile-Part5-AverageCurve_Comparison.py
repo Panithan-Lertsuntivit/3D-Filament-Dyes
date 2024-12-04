@@ -42,7 +42,11 @@ temp_groups = {
 #                   'Purple_200C', 'Red_200C'],
 # }
 
+# Color Order: Black (#17202a), Blue (#1f618d), Green (#1e8449),
+#               Purple (#6c3483), Red (#a93226)
+color_order = ['black', 'dodgerblue', 'forestgreen', 'darkviolet', 'crimson']
 
+''' Main Code '''
 for temp_group, category in temp_groups.items():
     # Folder name containing CSV files for tensile test results
     data_folder = "Average-Tensile-Graphs"
@@ -56,6 +60,8 @@ for temp_group, category in temp_groups.items():
     # Initializing a figure
     plt.figure(figsize=(10, 6))
 
+    # Note: Graphing Black, Blue, Green, Purple and then Red
+
     for i, combination in enumerate(category):
         # Curve Description
         color_temp = f"{combination}"
@@ -65,7 +71,8 @@ for temp_group, category in temp_groups.items():
 
         [current_stress, current_strain] = stress_strain_from_csv(file_path)
 
-        plt.plot(current_strain, current_stress, label=curve_description)
+        plt.plot(current_strain, current_stress,
+                 label=curve_description, color=color_order[i])
 
     # Labeling
     plt.title(graph_description)
