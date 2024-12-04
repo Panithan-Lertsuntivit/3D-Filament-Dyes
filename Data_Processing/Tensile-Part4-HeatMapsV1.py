@@ -1,6 +1,10 @@
+# Script is called Tensile-Part4-HeatMapsV1.py
+import pandas as pd  # reading and processing data
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns  # Optional for a more polished plot
+
+# V1 Heat Maps are traditional heat maps, which have a cell/grid arrangement
 
 # Example data
 colors = ["Red", "Blue", "Green", "Purple", "Black"]  # Qualitative axis (e.g., colors)

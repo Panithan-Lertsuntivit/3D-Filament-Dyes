@@ -9,6 +9,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
     combined_data['Curve_Number'] = ''
     combined_data['Stress'] = ''
     combined_data['Strain'] = ''
+    combined_data['Sequence'] = ''
     combined_data['Comment'] = ''
 
     # Creating a Description
@@ -49,6 +50,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         combined_data.loc[j, 'Curve_Number'] = curve_name
         combined_data.loc[j, 'Stress'] = f'{stress.tolist()}'
         combined_data.loc[j, 'Strain'] = f'{strain.tolist()}'
+        combined_data.loc[j, 'Sequence'] = seq
 
     # Adding a description
     combined_data.loc[1, 'Comment'] = description
