@@ -55,6 +55,7 @@ def tensile_curve_properties(array_stress, array_strain):
 
     return uts, young_modulus, toughness
 
+
 '''----- End of Functions --------------------------------------------------'''
 
 '''Mainline of Code - Beginning'''
@@ -108,12 +109,13 @@ category_counter = 1
 
 ''' Beginning of for loop iteration '''
 for file_name in processed_file_names:
-    folder_name = f"Processed-Tensile-Data"
+    folder_name = f"Tensile-Processed-Data"
 
     # Creating the file location
     file_location = f"{folder_name}/{file_name}"
 
     description = file_name.replace('_processed.csv', '')
+    color_temp = description.replace('_', '/')
     category_table.loc[category_counter, 'Category'] = description
 
     ''' Getting Stress / Strain and Calculating Average Curve - - - - - - - '''
@@ -138,6 +140,7 @@ for file_name in processed_file_names:
         sequence_table.loc[seq_counter, 'UTS'] = seq_uts
         sequence_table.loc[seq_counter, 'Young_Modulus'] = seq_young_modulus
         sequence_table.loc[seq_counter, 'Toughness'] = seq_toughness
+        sequence_table.loc[seq_counter, 'Color/Temperature'] = color_temp
 
         '''Saving values to array - to calculate std and averages'''
         uts_array.append(seq_uts)
@@ -166,9 +169,9 @@ for file_name in processed_file_names:
 
 ''' End of for loop iteration '''
 
-# Save the DataFrames to a CSV file, in Processed-Tensile-Data
-sequence_output_file = f"Processed-Tensile-Data/Table_Sequences.csv"
-category_output_file = f"Processed-Tensile-Data/Table_Categories.csv"
+# Save the DataFrames to a CSV file, in Tensile-Results
+sequence_output_file = f"Tensile-Results/Table_Sequences.csv"
+category_output_file = f"Tensile-Results/Table_Categories.csv"
 
 sequence_table.to_csv(sequence_output_file, index=False)
 category_table.to_csv(category_output_file, index=False)

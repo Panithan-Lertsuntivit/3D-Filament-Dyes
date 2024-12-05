@@ -128,7 +128,7 @@ processed_file_names = [
 
 # Main For loop
 for file_name in processed_file_names:
-    folder_name = f"Processed-Tensile-Data"
+    folder_name = f"Tensile-Processed-Data"
 
     # Creating the file location
     file_location = f"{folder_name}/{file_name}"
@@ -199,7 +199,7 @@ for file_name in processed_file_names:
 
     ''' Plotting - Original Curves with Average Curve - - - - - - - - - - - '''
     # Establishing save paths first
-    save_folder = "Average-Tensile-Graphs"
+    save_folder = "Tensile-Average-Graphs"
     simple_description = file_name.replace('_processed.csv', 'C')
     description = (simple_description.replace('C', '°C')
                    .replace('_', ' Filament at '))

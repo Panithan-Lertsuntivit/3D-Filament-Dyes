@@ -42,20 +42,18 @@ temp_groups = {
 #                   'Purple_200C', 'Red_200C'],
 # }
 
-# Color Order: Black (#17202a), Blue (#1f618d), Green (#1e8449),
-#               Purple (#6c3483), Red (#a93226)
 color_order = ['black', 'dodgerblue', 'forestgreen', 'darkviolet', 'crimson']
 
 ''' Main Code '''
 for temp_group, category in temp_groups.items():
     # Folder name containing CSV files for tensile test results
-    data_folder = "Average-Tensile-Graphs"
+    data_folder = "Tensile-Average-Graphs"
 
     # Making Descriptions and Save Paths
     group_temperature = (f"{temp_group}".replace('Temp_','')
                          .replace('C', '°C'))
     graph_description = f"Comparison of Colors at {group_temperature}"
-    png_save_path = f"Average-Tensile-Graphs/Avg_Comparison_{temp_group}.png"
+    png_save_path = f"Tensile-Results/Color_Comparison_{temp_group}.png"
 
     # Initializing a figure
     plt.figure(figsize=(10, 6))
@@ -83,6 +81,8 @@ for temp_group, category in temp_groups.items():
 
     # Saving plot then showing it
     plt.savefig(png_save_path, dpi=600)
+    print(f"Saved plot to: {png_save_path}")
+
     plt.show()
 
 
