@@ -1,5 +1,6 @@
 # Script is called Tensile-Part1-Processing.py
 import pandas as pd  # reading and processing data
+import numpy as np
 
 '''----- Beginning of Functions ---------------------------------------------'''
 # Function to process and save data for a specific combination
