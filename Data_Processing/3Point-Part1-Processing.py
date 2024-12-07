@@ -132,6 +132,6 @@ tester_group = {
 data_folder = "3PointBending-Data"
 
 # Process each color/temperature combination within the file_groups dictionary
-for combination_type, sequences in tester_group.items():
+for combination_type, sequences in file_groups.items():
     # Calling on process_and_save_data function to process raw data
     process_and_save_data(data_folder, combination_type, sequences)
