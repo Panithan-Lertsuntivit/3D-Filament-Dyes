@@ -31,12 +31,17 @@ def latextable_from_csv(csv_file, txt_file):
     # Entering column names
     textfile.write("\t\t\\hline \n")
 
-    string_column_names = f"\t\t\\textbf{{{column_names[0]}}} "
-    for i in range(num_columns):
-        name_addition = f"& \\textbf{{{column_names[i]}}} "
+    # Inputting warning message
+    textfile.write("\t\t% LaTeX doesn't allow for underscores (_), "
+                   "please change it before compiling \n")
+
+    string_column_names = f"\t\t"
+    for column_number in range(num_columns):
+        name_addition = f"\\textbf{{{column_names[column_number]}}} & "
+        name_addition = name_addition.replace('_', ' ')
         string_column_names = string_column_names + name_addition
-    string_column_names = string_column_names + "\\\\"
-    textfile.write(string_column_names)
+    column_names_entry = string_column_names[:-2] + "\\\\ \n"
+    textfile.write(column_names_entry)
     textfile.write("\t\t\\hline \n")
 
     # Entering table information
@@ -47,6 +52,8 @@ def latextable_from_csv(csv_file, txt_file):
             # Limiting to two decimal places if a floating point
             if isinstance(cell_info, float):
                 cell_info = f"{cell_info:0.3f}"
+            if isinstance(cell_info, str):
+                cell_info = cell_info.replace('_', ' ')
 
             cell_entry = f"{cell_info} & "
             row_string = row_string + cell_entry
@@ -60,13 +67,22 @@ def latextable_from_csv(csv_file, txt_file):
 
     textfile.close()
     print("csv file has been converted to latex")
-    print(f"result saved to: {txt_file} \n")
+    print(f"Result saved to: {txt_file} \n")
 
 
 ''' End of Function latextable_from_csv() '''
 
-# File location
-csv_path = f'Tensile-Results/Table_Sequences.csv'
-txt_path = f'Tensile-Results/Table_Sequences.txt'
+# File locations
+csv_paths = [
+    "Tensile-Results/Table_Categories.csv",
+    "Tensile-Results/Table_Sequences.csv",
+]
 
-latextable_from_csv(csv_path, txt_path)
+txt_paths = [
+    "Tensile-Results/Table_Categories.txt",
+    "Tensile-Results/Table_Sequences.txt",
+]
+
+# For loop iteration
+for csv_location, txt_location in zip(csv_paths, txt_paths):
+    latextable_from_csv(csv_location, txt_location)

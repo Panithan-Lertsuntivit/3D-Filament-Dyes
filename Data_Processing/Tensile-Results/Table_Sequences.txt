@@ -5,7 +5,9 @@
 
 	\begin{tabular}{|c|c|c|c|c|} 
 		\hline 
-		\textbf{Sequence_Number} & \textbf{Sequence_Number} & \textbf{UTS} & \textbf{Young_Modulus} & \textbf{Toughness} & \textbf{Color/Temperature} \\		\hline 
+		% LaTeX doesn't allow for underscores (_), please change it before compiling 
+		\textbf{Sequence Number} & \textbf{UTS} & \textbf{Young Modulus} & \textbf{Toughness} & \textbf{Color/Temperature} \\ 
+		\hline 
 		5 & 52.131 & 915.710 & 1.773 & Red/200 \\ 
 		\hline 
 		7 & 50.210 & 1055.107 & 1.429 & Red/200 \\ 
