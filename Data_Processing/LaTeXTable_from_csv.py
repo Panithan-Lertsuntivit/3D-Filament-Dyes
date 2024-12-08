@@ -75,12 +75,12 @@ def latextable_from_csv(csv_file, txt_file):
 # File locations
 csv_paths = [
     "Tensile-Results/Table_Categories.csv",
-    "Tensile-Results/Table_Sequences.csv",
+    "Tensile-Results/Table_Sequences_Sorted.csv",
 ]
 
 txt_paths = [
     "Tensile-Results/Table_Categories.txt",
-    "Tensile-Results/Table_Sequences.txt",
+    "Tensile-Results/Table_Sequences_Sorted.txt",
 ]
 
 # For loop iteration
