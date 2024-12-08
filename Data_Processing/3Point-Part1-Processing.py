@@ -1,4 +1,4 @@
-# Script is called Tensile-Part1-Processing.py
+# Script is called 3Point-Part1-Processing.py
 import pandas as pd  # reading and processing data
 import numpy as np
 
@@ -93,9 +93,6 @@ def find_increasing_index(y_values):
     first_increasing_idx = less_than_tolerance[0][-1]
 
     return first_increasing_idx
-    
-
-
 
 
 '''----- End of Functions --------------------------------------------------'''

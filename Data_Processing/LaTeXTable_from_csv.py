@@ -1,0 +1,72 @@
+# Script is called LaTeXTable_from_csv.py
+import pandas as pd
+
+
+''' Beginning of Function latextable_from_csv() '''
+def latextable_from_csv(csv_file, txt_file):
+    # Save csv information into dataframe and open text file
+    dataframe = pd.read_csv(csv_file)
+    textfile = open(txt_file, 'w')
+
+    # Writing general beginning of latex table
+    textfile.write("\\begin{table}[htbp] \n")
+    textfile.write("\t\\centering \n")
+    textfile.write("\t\\captionsetup{skip=10pt} "
+                   "% Space between caption and table \n")
+    textfile.write("\t\\caption{ } \n\n")
+
+    # General table information
+    column_names = dataframe.columns.tolist()
+    num_rows = len(dataframe)
+    num_columns = len(column_names)
+
+    # Beginning of tabular
+    tabular_start = "\t\\begin{tabular}{|"
+    for i in range(num_columns):
+        column_entry = "c|"
+        tabular_start = tabular_start + column_entry
+    tabular_start = tabular_start + "} \n"
+    textfile.write(tabular_start)
+
+    # Entering column names
+    textfile.write("\t\t\\hline \n")
+
+    string_column_names = f"\t\t\\textbf{{{column_names[0]}}} "
+    for i in range(num_columns):
+        name_addition = f"& \\textbf{{{column_names[i]}}} "
+        string_column_names = string_column_names + name_addition
+    string_column_names = string_column_names + "\\\\"
+    textfile.write(string_column_names)
+    textfile.write("\t\t\\hline \n")
+
+    # Entering table information
+    for row_number in range(num_rows):
+        row_string = f"\t\t"
+        for i in range(num_columns):
+            cell_info = dataframe.loc[row_number, column_names[i]]
+            # Limiting to two decimal places if a floating point
+            if isinstance(cell_info, float):
+                cell_info = f"{cell_info:0.3f}"
+
+            cell_entry = f"{cell_info} & "
+            row_string = row_string + cell_entry
+        # Getting rid of the last '&' and adding '\\'
+        row_entry = row_string[:-2] + "\\\\ \n"
+        textfile.write(row_entry)
+        textfile.write("\t\t\\hline \n")
+
+    textfile.write("\t\\end{tabular} \n")
+    textfile.write("\\end{table} \n")
+
+    textfile.close()
+    print("csv file has been converted to latex")
+    print(f"result saved to: {txt_file} \n")
+
+
+''' End of Function latextable_from_csv() '''
+
+# File location
+csv_path = f'Tensile-Results/Table_Sequences.csv'
+txt_path = f'Tensile-Results/Table_Sequences.txt'
+
+latextable_from_csv(csv_path, txt_path)
