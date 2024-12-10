@@ -62,7 +62,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         thickness_mm = 6.35     # Thickness or height
 
         flex_stress_kPa = ((3 * filtered_load_N * length_mm) /
-                       (2 * width_mm * thickness_mm))
+                       (2 * width_mm * pow(thickness_mm, 2)))
         flex_stress_MPa = flex_stress_kPa * (pow(10, -3))
         flex_strain = ((6 * thickness_mm * filtered_deflection_mm) /
                        pow(length_mm, 2))

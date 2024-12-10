@@ -21,7 +21,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         # Pre Initialize Data Frame headers
         combined_data['Flex_Stress'] = ''
         combined_data['Flex_Strain'] = ''
-        combined_data['YoungModulus'] = ''
+        combined_data['Flex_Modulus'] = ''
         combined_data['Sequence'] = ''
 
         file_path = f"{folder_location}/Sequence_{seq}.csv"
@@ -60,7 +60,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         thickness_mm = 6.35     # Thickness or height
 
         flex_stress_kPa = ((3 * filtered_load_N * length_mm) /
-                       (2 * width_mm * thickness_mm))
+                       (2 * width_mm * pow(thickness_mm, 2)))
         flex_stress_MPa = flex_stress_kPa * (pow(10, -3))
         flex_strain = ((6 * thickness_mm * filtered_deflection_mm) /
                        pow(length_mm, 2))
@@ -69,8 +69,8 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         combined_data['Flex_Stress'] = flex_stress_MPa.tolist()
         combined_data['Flex_Strain'] = flex_strain.tolist()
         combined_data.loc[0, 'Sequence'] = seq
-        combined_data.loc[0, 'YoungModulus'] \
-            = find_young_modulus(flex_stress_MPa.tolist(), flex_strain.tolist())
+        combined_data.loc[0, 'Flex_Modulus'] \
+            = find_flex_modulus(flex_stress_MPa.tolist(), flex_strain.tolist())
 
         output_sequence_file = f"3PointBending-FilteredData/Sequence_{seq}_filtered.csv"
         combined_data.to_csv(output_sequence_file, index=False)
@@ -93,7 +93,7 @@ def find_increasing_index(y_values):
 
     return first_increasing_idx
 
-def find_young_modulus(stress_list, strain_list):
+def find_flex_modulus(stress_list, strain_list):
     # Function calculates INDIVIDUAL curve property: Young's Modulus
     # Converting from list to numpy array
     stress_array = np.array(stress_list)
@@ -101,6 +101,7 @@ def find_young_modulus(stress_list, strain_list):
 
     # Calculating the ultimate tensile strength
     uts_idx = np.argmax(stress_array)
+    end_linear = int(uts_idx / 4)
     uts = stress_array[uts_idx]
 
     # Calculating Young's Modulus
@@ -110,9 +111,9 @@ def find_young_modulus(stress_list, strain_list):
     # Getting linear line of best fit
     [slope, intercept] \
         = np.polyfit(linear_strain_segment, linear_stress_segment, 1)
-    young_modulus = slope
+    flex_modulus = slope
 
-    return young_modulus
+    return flex_modulus
 
 
 '''----- End of Functions --------------------------------------------------'''
