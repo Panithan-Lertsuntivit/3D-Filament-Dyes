@@ -77,7 +77,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
     combined_data.loc[1, 'Comment'] = description
 
     # Save the combined data to a CSV file, in Processed-Tensile-Data
-    output_file = f"3PointBending-Processed-Data/{combination}_processed.csv"
+    output_file = f"3Point-Processed-Data/{combination}_processed.csv"
     combined_data.to_csv(output_file, index=False)
     print(f"Saved results to: {output_file}")
 

@@ -72,7 +72,7 @@ def process_and_save_data(folder_location, combination, sequence_nums):
         combined_data.loc[0, 'Flex_Modulus'] \
             = find_flex_modulus(flex_stress_MPa.tolist(), flex_strain.tolist())
 
-        output_sequence_file = f"3PointBending-FilteredData/Sequence_{seq}_filtered.csv"
+        output_sequence_file = f"3Point-FilteredData/Sequence_{seq}_filtered.csv"
         combined_data.to_csv(output_sequence_file, index=False)
         print(f'Saved filtered data to: {output_sequence_file}')
 
@@ -100,13 +100,13 @@ def find_flex_modulus(stress_list, strain_list):
     strain_array = np.array(strain_list)
 
     # Calculating the ultimate tensile strength
-    uts_idx = np.argmax(stress_array)
-    end_linear = int(uts_idx / 4)
-    uts = stress_array[uts_idx]
+    ufs_idx = np.argmax(stress_array)
+    end_linear = int(ufs_idx / 4)
+    uts = stress_array[ufs_idx]
 
     # Calculating Young's Modulus
-    linear_stress_segment = stress_array[0:uts_idx]
-    linear_strain_segment = strain_array[0:uts_idx]
+    linear_stress_segment = stress_array[0:ufs_idx]
+    linear_strain_segment = strain_array[0:ufs_idx]
 
     # Getting linear line of best fit
     [slope, intercept] \
