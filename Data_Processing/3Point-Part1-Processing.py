@@ -85,8 +85,12 @@ def process_and_save_data(folder_location, combination, sequence_nums):
 def find_increasing_index(y_values):
     # Function finds the first index of an increasing pattern (above the
     # set tolerance)
+    # Using the rising segment of the values
+    max_idx = np.argmax(y_values)
+    y_values_rising = y_values[0:max_idx]
+
     tolerance = 0.50
-    less_than_tolerance = np.where(y_values < tolerance)
+    less_than_tolerance = np.where(y_values_rising < tolerance)
 
     # Getting the last index of array
     # Note: np.where outputs a tuple, so we want the first tuple item (use [0])
@@ -119,10 +123,10 @@ file_groups = {
 }
 
 tester_group = {
-    # Red Color Combinations
-    "Red_200": [1, 5, 16, 56],
-    # "Red_215": [3, 25, 30, 37],
-    # "Red_230": [9, 46, 53, 58],
+    # Blue Color Combinations
+    # "Blue_200": [7, 31, 39, 47],
+    # "Blue_215": [14, 20, 29, 55],
+    "Blue_230": [2, 4, 33, 44],
 }
 
 # Folder name containing CSV files for tensile test results
