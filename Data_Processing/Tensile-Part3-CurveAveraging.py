@@ -97,6 +97,17 @@ def interpolate_avg_curve(tg_stress_avg, num_elements, array_stresses, array_str
 
     return avg_stress_axis, avg_strain_axis
 
+def averaging_curves(array_stresses, array_strains):
+    # Regular curve averaging
+
+    stacked_stresses = np.vstack(array_stresses)
+    stacked_strains = np.vstack(array_strains)
+
+    average_stress = np.mean(stacked_stresses, axis=0)
+    average_strain = np.mean(stacked_strains, axis=0)
+
+    return average_stress, average_strain
+
 
 '''----- End of Functions --------------------------------------------------'''
 
@@ -147,6 +158,7 @@ for file_name in processed_file_names:
 
     rising_strain_curves = []
     falling_strain_curves = []
+    falling_num_elements = []
 
     for i, stresses in enumerate(stress_curves):
         # Calling split_at_UTS function
@@ -158,6 +170,7 @@ for file_name in processed_file_names:
 
         rising_strain_curves.append(rising_strains)
         falling_strain_curves.append(relative_falling_strains)
+        falling_num_elements.append(relative_falling_stresses.size)
 
     ''' Interpolating Average Rising Curve  - - - - - - - - - - - - - - - - '''
     [avg_rise_stress, avg_rise_strain] \
@@ -165,6 +178,18 @@ for file_name in processed_file_names:
                                 rising_stress_curves, rising_strain_curves)
 
     ''' Interpolating Average Falling Curve  - - - - - - - - - - - - - - - '''
+    # Determine how many average points we should even take
+    avg_num_falling_elements = np.mean(falling_num_elements)
+    frac_num_falling_elements = avg_num_falling_elements * (3/4)
+    min_num_elements = np.min(falling_num_elements)
+    print(frac_num_falling_elements)
+    print(min_num_elements)
+
+    if (frac_num_falling_elements > min_num_elements):
+        usable_num_falling = int(np.floor(min_num_elements))
+    else:
+        usable_num_falling = int(np.floor(frac_num_falling_elements))
+
     # Slight preparation to get curve with relative changes
     rel_fall_stress_curves = []
     rel_fall_strain_curves = []
@@ -174,21 +199,22 @@ for file_name in processed_file_names:
         ut_stress_value = stress_curves[i][uts_idx]
         ut_strain_value = strain_curves[i][uts_idx]
 
-        relative_falling_stress = falling_stress_curves[i] - ut_stress_value
+        relative_falling_stress \
+            = falling_stress_curves[i][0:usable_num_falling] - ut_stress_value
         rel_fall_stress_curves.append(relative_falling_stress)
 
-        relative_falling_strain = falling_strain_curves[i] - ut_strain_value
+        relative_falling_strain \
+            = falling_strain_curves[i][0:usable_num_falling] - ut_strain_value
         rel_fall_strain_curves.append(relative_falling_strain)
 
-    # Function to interpolate the relative curves
+    # Function to average the relative curves
     [rel_avg_fall_stress, rel_avg_fall_strain] \
-        = interpolate_avg_curve(avg_stressdrop, num_element_fall,
-                                rel_fall_stress_curves, rel_fall_strain_curves)
+        = averaging_curves(rel_fall_stress_curves, rel_fall_strain_curves)
 
     # Additional processing - Going back to actual curve
-    falling_stress_axis = rel_avg_fall_stress[0:-4] + avg_uts
+    falling_stress_axis = rel_avg_fall_stress[0:-1] + avg_uts
 
-    average_strain_curve_falling = (rel_avg_fall_strain[0:-4]
+    average_strain_curve_falling = (rel_avg_fall_strain[0:-1]
                                     + avg_rise_strain[-1])
 
     ''' Concatenating Curves for Graphing - - - - - - - - - - - - - - - - - '''

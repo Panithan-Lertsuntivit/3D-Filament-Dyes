@@ -101,7 +101,6 @@ def averaging_curves(array_stresses, array_strains):
     return average_stress, average_strain
 
 
-
 '''----- End of Functions --------------------------------------------------'''
 
 '''Mainline of Code - Beginning'''
@@ -174,7 +173,7 @@ for file_name in processed_file_names:
     ''' Interpolating Average Falling Curve  - - - - - - - - - - - - - - - '''
     # Determine how many average points we should even take
     avg_num_falling_elements = np.mean(falling_num_elements)
-    frac_num_falling_elements = avg_num_falling_elements * (1/2)
+    frac_num_falling_elements = avg_num_falling_elements * (3/4)
     min_num_elements = np.min(falling_num_elements)
 
     if (frac_num_falling_elements > min_num_elements):
@@ -204,9 +203,9 @@ for file_name in processed_file_names:
         = averaging_curves(rel_fall_stress_curves, rel_fall_strain_curves)
 
     # Additional processing - Going back to actual curve
-    falling_stress_axis = rel_avg_fall_stress[0:-4] + avg_ufs
+    falling_stress_axis = rel_avg_fall_stress[0:-1] + avg_ufs
 
-    average_strain_curve_falling = (rel_avg_fall_strain[0:-4]
+    average_strain_curve_falling = (rel_avg_fall_strain[0:-1]
                                     + avg_rise_strain[-1])
 
     ''' Concatenating Curves for Graphing - - - - - - - - - - - - - - - - - '''
