@@ -2,6 +2,7 @@
 import pandas as pd  # reading and processing data
 import numpy as np
 import ast
+import matplotlib.pyplot as plt
 
 '''----- Beginning of Functions ---------------------------------------------'''
 
@@ -40,20 +41,50 @@ def tensile_curve_properties(array_stress, array_strain):
     # Calculating the ultimate tensile strength
     uts_idx = np.argmax(array_stress)
     uts = array_stress[uts_idx]
+    linear_idx = int(uts_idx / 5)
 
     # Calculating Young's Modulus
-    linear_stress_segment = array_stress[0:uts_idx]
-    linear_strain_segment = array_strain[0:uts_idx]
+    linear_stress_segment = array_stress[0:linear_idx]
+    linear_strain_segment = array_strain[0:linear_idx]
 
     # Getting linear line of best fit
     [slope, intercept] = np.polyfit(linear_strain_segment,
                                     linear_stress_segment, 1)
     young_modulus = slope
 
-    # Calculating Toughness
-    toughness = np.trapezoid(array_stress, array_strain)
+    # Calculating the tensile yield strength
+    # 0.2% offset for strain = 0.002 strain
+    x_offset = 0.002
+    offset_line = young_modulus * (array_strain - x_offset)
 
-    return uts, young_modulus, toughness
+    stress_difference = array_stress - offset_line
+
+    # np.where outputs a tuple, so we have to pass two index values
+    intersect_index = np.where(stress_difference <= 0)[0][0]
+
+    yield_strength = array_stress[intersect_index]
+    yield_strain = array_strain[intersect_index]
+
+    # ''' Graphing '''
+    # # # Find yield strength
+    # # yield_strength, yield_strain, offset_line = find_yield_strength(strain,
+    # #                                                                 stress)
+    # # Plot the results
+    # plt.figure(figsize=(8, 6))
+    # plt.plot(array_strain, array_stress, label="Stress-Strain Curve")
+    # plt.plot(array_strain, offset_line, "--", label="0.2% Offset Line")
+    # plt.scatter(yield_strain, yield_strength, color="red",
+    #             label=f"Yield Strength: {yield_strength:.2f} MPa")
+    # plt.axhline(y=yield_strength, color="red", linestyle="--", alpha=0.7)
+    # plt.axvline(x=yield_strain, color="red", linestyle="--", alpha=0.7)
+    # plt.xlabel("Strain")
+    # plt.ylabel("Stress (MPa)")
+    # plt.title("Yield Strength Determination")
+    # plt.legend()
+    # plt.grid()
+    # plt.show()
+
+    return uts, young_modulus, yield_strength
 
 
 '''----- End of Functions --------------------------------------------------'''
@@ -82,7 +113,8 @@ temp_file_names = [
     # Red Color Combinations
     # "Red_200_processed.csv",
     # "Red_215_processed.csv",
-    "Red_230_processed.csv",
+    # "Red_230_processed.csv",
+    "Black_200_processed.csv",
 ]
 
 # Initializing DataFrame for Sequence UTS, Young's Modulus, Toughness
@@ -90,7 +122,7 @@ sequence_table = pd.DataFrame()
 sequence_table['Sequence_Number'] = ''
 sequence_table['UTS'] = ''
 sequence_table['Young_Modulus'] = ''
-sequence_table['Toughness'] = ''
+sequence_table['Yield_Strength'] = ''
 sequence_table['Color/Temperature'] = ''
 
 seq_counter = 1
@@ -100,10 +132,10 @@ category_table = pd.DataFrame()
 category_table['Category'] = ''
 category_table['AVG_UTS'] = ''
 category_table['AVG_YoungModulus'] = ''
-category_table['AVG_Toughness'] = ''
+category_table['AVG_Yield_Strength'] = ''
 category_table['STD_UTS'] = ''
 category_table['STD_YoungModulus'] = ''
-category_table['STD_Toughness'] = ''
+category_table['STD_Yield_Strength'] = ''
 
 category_counter = 1
 
@@ -126,26 +158,26 @@ for file_name in processed_file_names:
     # Initialize Arrays
     uts_array = []
     young_modulus_array = []
-    toughness_array = []
+    yield_strength_array = []
 
     j = 0
 
     for seq in sequence_nums:
         # Function to get UTS, E (Young's Modulus), and Toughness
-        [seq_uts, seq_young_modulus, seq_toughness] \
+        [seq_uts, seq_young_modulus, seq_yield_strength] \
             = tensile_curve_properties(stress_curves[j], strain_curves[j])
 
         '''Information to DataFrame'''
         sequence_table.loc[seq_counter, 'Sequence_Number'] = seq
         sequence_table.loc[seq_counter, 'UTS'] = seq_uts
         sequence_table.loc[seq_counter, 'Young_Modulus'] = seq_young_modulus
-        sequence_table.loc[seq_counter, 'Toughness'] = seq_toughness
+        sequence_table.loc[seq_counter, 'Yield_Strength'] = seq_yield_strength
         sequence_table.loc[seq_counter, 'Color/Temperature'] = color_temp
 
         '''Saving values to array - to calculate std and averages'''
         uts_array.append(seq_uts)
         young_modulus_array.append(seq_young_modulus)
-        toughness_array.append(seq_toughness)
+        yield_strength_array.append(seq_yield_strength)
 
         seq_counter = seq_counter + 1
         j = j + 1
@@ -155,15 +187,15 @@ for file_name in processed_file_names:
         = np.average(uts_array)
     category_table.loc[category_counter, 'AVG_YoungModulus'] \
         = np.average(young_modulus_array)
-    category_table.loc[category_counter, 'AVG_Toughness'] \
-        = np.average(toughness_array)
+    category_table.loc[category_counter, 'AVG_Yield_Strength'] \
+        = np.average(yield_strength_array)
 
     category_table.loc[category_counter, 'STD_UTS'] \
         = np.std(uts_array, ddof=1)
     category_table.loc[category_counter, 'STD_YoungModulus'] \
         = np.std(young_modulus_array, ddof=1)
-    category_table.loc[category_counter, 'STD_Toughness'] \
-        = np.std(toughness_array, ddof=1)
+    category_table.loc[category_counter, 'STD_Yield_Strength'] \
+        = np.std(yield_strength_array, ddof=1)
 
     category_counter = category_counter + 1
 
