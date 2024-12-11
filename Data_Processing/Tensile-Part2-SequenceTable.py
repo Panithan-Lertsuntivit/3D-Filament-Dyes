@@ -36,7 +36,7 @@ def stress_strain_seq_from_csv(filelocation):
 
 def tensile_curve_properties(array_stress, array_strain):
     # Function calculates INDIVIDUAL tensile curve properties
-    # Properties: Ultimate Tensile Strength, Young's Modulus, and Toughness
+    # Properties: Ultimate Tensile Strength, Young's Modulus, and Yield Strength
 
     # Calculating the ultimate tensile strength
     uts_idx = np.argmax(array_stress)
@@ -117,13 +117,14 @@ temp_file_names = [
     "Black_200_processed.csv",
 ]
 
-# Initializing DataFrame for Sequence UTS, Young's Modulus, Toughness
+# Initializing DataFrame for Sequence UTS, Young's Modulus, Yield Strength
 sequence_table = pd.DataFrame()
 sequence_table['Sequence_Number'] = ''
+sequence_table['Color'] = ''
+sequence_table['Temperature'] = ''
 sequence_table['UTS'] = ''
 sequence_table['Young_Modulus'] = ''
 sequence_table['Yield_Strength'] = ''
-sequence_table['Color/Temperature'] = ''
 
 seq_counter = 1
 
@@ -131,10 +132,10 @@ seq_counter = 1
 category_table = pd.DataFrame()
 category_table['Category'] = ''
 category_table['AVG_UTS'] = ''
-category_table['AVG_YoungModulus'] = ''
-category_table['AVG_Yield_Strength'] = ''
 category_table['STD_UTS'] = ''
+category_table['AVG_YoungModulus'] = ''
 category_table['STD_YoungModulus'] = ''
+category_table['AVG_Yield_Strength'] = ''
 category_table['STD_Yield_Strength'] = ''
 
 category_counter = 1
@@ -147,7 +148,7 @@ for file_name in processed_file_names:
     file_location = f"{folder_name}/{file_name}"
 
     description = file_name.replace('_processed.csv', '')
-    color_temp = description.replace('_', '/')
+    [color, temperature] = description.split('_')
     category_table.loc[category_counter, 'Category'] = description
 
     ''' Getting Stress / Strain and Calculating Average Curve - - - - - - - '''
@@ -172,15 +173,16 @@ for file_name in processed_file_names:
         sequence_table.loc[seq_counter, 'UTS'] = seq_uts
         sequence_table.loc[seq_counter, 'Young_Modulus'] = seq_young_modulus
         sequence_table.loc[seq_counter, 'Yield_Strength'] = seq_yield_strength
-        sequence_table.loc[seq_counter, 'Color/Temperature'] = color_temp
+        sequence_table.loc[seq_counter, 'Color'] = color
+        sequence_table.loc[seq_counter, 'Temperature'] = temperature
 
         '''Saving values to array - to calculate std and averages'''
         uts_array.append(seq_uts)
         young_modulus_array.append(seq_young_modulus)
         yield_strength_array.append(seq_yield_strength)
 
-        seq_counter = seq_counter + 1
         j = j + 1
+        seq_counter = seq_counter + 1
 
     ''' Calculating Averages and STD, then save to DataFrame '''
     category_table.loc[category_counter, 'AVG_UTS'] \
@@ -205,13 +207,12 @@ for file_name in processed_file_names:
 sequence_output_file = f"Tensile-Results/Table_Sequences.csv"
 category_output_file = f"Tensile-Results/Table_Categories.csv"
 
-sequence_table.to_csv(sequence_output_file, index=False)
+sorted_sequence_table = sequence_table.sort_values(by=['Sequence_Number'],
+                                                   ascending=True)
+
+sorted_sequence_table.to_csv(sequence_output_file, index=False)
 category_table.to_csv(category_output_file, index=False)
 
 print(f"Saved sequence table to: {sequence_output_file} \n")
 print(f"Saved category table to: {category_output_file} \n")
-
-
-
-
 
