@@ -128,6 +128,7 @@ for temp_group, category in temp_groups.items():
     plt.ylabel("Flexural Stress [MPa]")
     plt.legend()
     plt.grid(True)
+    plt.tight_layout()
 
     # Saving plot then showing it
     plt.savefig(png_save_path, dpi=600)

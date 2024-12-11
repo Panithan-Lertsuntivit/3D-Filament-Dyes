@@ -240,6 +240,7 @@ for file_name in processed_file_names:
     plt.ylabel("Flexural Stress [MPa]")
     plt.legend()
     plt.grid(True)
+    plt.tight_layout()
 
     ''' Save plot and average data points to a folder - - - - - - - - - - - '''
     plt.savefig(png_save_path, dpi=600)

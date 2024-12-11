@@ -65,25 +65,6 @@ def tensile_curve_properties(array_stress, array_strain):
     yield_strength = array_stress[intersect_index]
     yield_strain = array_strain[intersect_index]
 
-    # ''' Graphing '''
-    # # # Find yield strength
-    # # yield_strength, yield_strain, offset_line = find_yield_strength(strain,
-    # #                                                                 stress)
-    # # Plot the results
-    # plt.figure(figsize=(8, 6))
-    # plt.plot(array_strain, array_stress, label="Stress-Strain Curve")
-    # plt.plot(array_strain, offset_line, "--", label="0.2% Offset Line")
-    # plt.scatter(yield_strain, yield_strength, color="red",
-    #             label=f"Yield Strength: {yield_strength:.2f} MPa")
-    # plt.axhline(y=yield_strength, color="red", linestyle="--", alpha=0.7)
-    # plt.axvline(x=yield_strain, color="red", linestyle="--", alpha=0.7)
-    # plt.xlabel("Strain")
-    # plt.ylabel("Stress (MPa)")
-    # plt.title("Yield Strength Determination")
-    # plt.legend()
-    # plt.grid()
-    # plt.show()
-
     return uts, young_modulus, yield_strength
 
 
