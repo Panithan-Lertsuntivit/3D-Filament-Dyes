@@ -1,0 +1,132 @@
+\begin{table}[htbp] 
+	\centering 
+	\captionsetup{skip=10pt} % Space between caption and table 
+	\caption{ } 
+
+	\begin{tabular}{|c|c|c|c|c|} 
+		\hline 
+		% LaTeX doesn't allow for underscores (_), please change it before compiling 
+		\textbf{Sequence Number} & \textbf{Color} & \textbf{Temperature} & \textbf{Flex Modulus} & \textbf{Flex Yield Strength} \\ 
+		\hline 
+		1 & Red & 200 & 2.257 & 0.035 \\ 
+		\hline 
+		2 & Blue & 230 & 2.130 & 0.039 \\ 
+		\hline 
+		3 & Red & 215 & 2.291 & 0.042 \\ 
+		\hline 
+		4 & Blue & 230 & 2.103 & 0.037 \\ 
+		\hline 
+		5 & Red & 200 & 2.242 & 0.035 \\ 
+		\hline 
+		6 & Green & 200 & 2.043 & 0.030 \\ 
+		\hline 
+		7 & Blue & 200 & 2.072 & 0.029 \\ 
+		\hline 
+		8 & Black & 230 & 2.354 & 0.043 \\ 
+		\hline 
+		9 & Red & 230 & 2.305 & 0.044 \\ 
+		\hline 
+		10 & Black & 230 & 2.259 & 0.043 \\ 
+		\hline 
+		11 & Purple & 230 & 2.222 & 0.042 \\ 
+		\hline 
+		12 & Purple & 200 & 2.116 & 0.030 \\ 
+		\hline 
+		13 & Green & 200 & 2.023 & 0.031 \\ 
+		\hline 
+		14 & Blue & 215 & 2.126 & 0.037 \\ 
+		\hline 
+		15 & Green & 230 & 2.149 & 0.038 \\ 
+		\hline 
+		16 & Red & 200 & 2.219 & 0.036 \\ 
+		\hline 
+		17 & Black & 200 & 2.167 & 0.035 \\ 
+		\hline 
+		18 & Black & 215 & 2.174 & 0.040 \\ 
+		\hline 
+		19 & Purple & 230 & 2.176 & 0.040 \\ 
+		\hline 
+		20 & Blue & 215 & 2.094 & 0.036 \\ 
+		\hline 
+		21 & Black & 200 & 2.142 & 0.034 \\ 
+		\hline 
+		22 & Purple & 200 & 2.092 & 0.030 \\ 
+		\hline 
+		23 & Purple & 200 & 2.068 & 0.030 \\ 
+		\hline 
+		24 & Purple & 215 & 2.148 & 0.040 \\ 
+		\hline 
+		25 & Red & 215 & 2.244 & 0.042 \\ 
+		\hline 
+		26 & Green & 215 & 2.169 & 0.039 \\ 
+		\hline 
+		27 & Black & 230 & 2.303 & 0.042 \\ 
+		\hline 
+		28 & Green & 200 & 2.047 & 0.033 \\ 
+		\hline 
+		29 & Blue & 215 & 2.104 & 0.037 \\ 
+		\hline 
+		30 & Red & 215 & 2.335 & 0.042 \\ 
+		\hline 
+		31 & Blue & 200 & 2.029 & 0.031 \\ 
+		\hline 
+		32 & Purple & 215 & 2.194 & 0.042 \\ 
+		\hline 
+		33 & Blue & 230 & 2.044 & 0.037 \\ 
+		\hline 
+		34 & Green & 200 & 2.087 & 0.032 \\ 
+		\hline 
+		35 & Black & 215 & 2.252 & 0.042 \\ 
+		\hline 
+		36 & Purple & 230 & 2.209 & 0.042 \\ 
+		\hline 
+		37 & Red & 215 & 2.194 & 0.041 \\ 
+		\hline 
+		38 & Black & 215 & 2.200 & 0.040 \\ 
+		\hline 
+		39 & Blue & 200 & 2.054 & 0.028 \\ 
+		\hline 
+		40 & Green & 215 & 2.055 & 0.038 \\ 
+		\hline 
+		41 & Green & 215 & 2.067 & 0.036 \\ 
+		\hline 
+		42 & Black & 215 & 2.229 & 0.041 \\ 
+		\hline 
+		43 & Black & 200 & 2.175 & 0.034 \\ 
+		\hline 
+		44 & Blue & 230 & 2.182 & 0.035 \\ 
+		\hline 
+		45 & Green & 230 & 2.167 & 0.036 \\ 
+		\hline 
+		46 & Red & 230 & 2.388 & 0.041 \\ 
+		\hline 
+		47 & Blue & 200 & 2.077 & 0.030 \\ 
+		\hline 
+		48 & Green & 215 & 2.084 & 0.034 \\ 
+		\hline 
+		49 & Green & 230 & 2.149 & 0.035 \\ 
+		\hline 
+		50 & Black & 200 & 2.196 & 0.033 \\ 
+		\hline 
+		51 & Purple & 215 & 2.181 & 0.039 \\ 
+		\hline 
+		52 & Black & 230 & 2.322 & 0.042 \\ 
+		\hline 
+		53 & Red & 230 & 2.316 & 0.042 \\ 
+		\hline 
+		54 & Green & 230 & 2.132 & 0.037 \\ 
+		\hline 
+		55 & Blue & 215 & 2.100 & 0.037 \\ 
+		\hline 
+		56 & Red & 200 & 2.225 & 0.034 \\ 
+		\hline 
+		57 & Purple & 230 & 2.230 & 0.039 \\ 
+		\hline 
+		58 & Red & 230 & 2.350 & 0.041 \\ 
+		\hline 
+		59 & Purple & 200 & 2.150 & 0.029 \\ 
+		\hline 
+		60 & Purple & 215 & 2.116 & 0.036 \\ 
+		\hline 
+	\end{tabular} 
+\end{table} 

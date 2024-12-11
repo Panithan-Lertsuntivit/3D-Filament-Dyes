@@ -1,0 +1,42 @@
+\begin{table}[htbp] 
+	\centering 
+	\captionsetup{skip=10pt} % Space between caption and table 
+	\caption{ } 
+
+	\begin{tabular}{|c|c|c|c|c|c|c|} 
+		\hline 
+		% LaTeX doesn't allow for underscores (_), please change it before compiling 
+		\textbf{Category} & \textbf{AVG UTS} & \textbf{STD UTS} & \textbf{AVG YoungModulus} & \textbf{STD YoungModulus} & \textbf{AVG Yield Strength} & \textbf{STD Yield Strength} \\ 
+		\hline 
+		Red 200 & 50.669 & 1.135 & 1389.672 & 26.783 & 29.758 & 2.305 \\ 
+		\hline 
+		Red 215 & 53.008 & 0.764 & 1273.214 & 45.371 & 23.575 & 2.307 \\ 
+		\hline 
+		Red 230 & 51.613 & 0.998 & 1213.699 & 100.405 & 20.075 & 1.170 \\ 
+		\hline 
+		Blue 200 & 46.746 & 0.306 & 1337.336 & 41.683 & 29.782 & 1.516 \\ 
+		\hline 
+		Blue 215 & 50.172 & 0.791 & 1129.131 & 98.592 & 20.877 & 1.317 \\ 
+		\hline 
+		Blue 230 & 48.515 & 0.408 & 1180.660 & 38.829 & 19.555 & 0.412 \\ 
+		\hline 
+		Green 200 & 45.586 & 1.163 & 1320.366 & 14.016 & 29.086 & 0.731 \\ 
+		\hline 
+		Green 215 & 49.060 & 1.156 & 1073.244 & 211.019 & 21.173 & 2.258 \\ 
+		\hline 
+		Green 230 & 48.137 & 0.361 & 1170.288 & 54.303 & 19.373 & 0.877 \\ 
+		\hline 
+		Purple 200 & 48.666 & 0.777 & 1336.461 & 31.472 & 30.224 & 5.934 \\ 
+		\hline 
+		Purple 215 & 47.211 & 0.400 & 1220.486 & 144.387 & 22.094 & 0.786 \\ 
+		\hline 
+		Purple 230 & 45.407 & 2.968 & 1226.160 & 60.774 & 18.912 & 1.789 \\ 
+		\hline 
+		Black 200 & 49.500 & 0.416 & 1332.518 & 61.869 & 29.177 & 6.059 \\ 
+		\hline 
+		Black 215 & 50.360 & 1.379 & 1231.693 & 126.282 & 23.087 & 4.445 \\ 
+		\hline 
+		Black 230 & 48.617 & 0.595 & 1207.844 & 82.586 & 19.688 & 1.344 \\ 
+		\hline 
+	\end{tabular} 
+\end{table} 
