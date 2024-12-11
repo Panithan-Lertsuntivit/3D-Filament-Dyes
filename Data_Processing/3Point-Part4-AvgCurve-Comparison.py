@@ -96,10 +96,12 @@ for temp_group, category in temp_groups.items():
     png_save_path = f"3Point-Results/Color_Comparison_{temp_group}.png"
 
     # Initializing a figure
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 6))
+    title_size = 13.5
+    label_size = 12
+    tick_size = 11.5
 
     # Note: Graphing Black, Blue, Green, Purple and then Red
-
     for i, combination in enumerate(category):
         # Curve Description
         color_temp = f"{combination}"
@@ -123,10 +125,14 @@ for temp_group, category in temp_groups.items():
                  label=curve_description, color=color_order[i])
 
     # Labeling
-    plt.title(graph_description)
-    plt.xlabel("Flexural Strain")
-    plt.ylabel("Flexural Stress [MPa]")
-    plt.legend()
+    plt.title(graph_description, fontsize=title_size, fontweight="bold")
+    plt.xlabel("Flexural Strain", fontsize=label_size)
+    plt.ylabel("Flexural Stress [MPa]", fontsize=label_size)
+
+    # Tick Marks and Legend
+    plt.tick_params(axis='both', which='major', labelsize=tick_size)
+    plt.legend(facecolor="white", edgecolor="black",
+               framealpha=1.0, fontsize=label_size, title_fontsize=title_size)
     plt.grid(True)
     plt.tight_layout()
 

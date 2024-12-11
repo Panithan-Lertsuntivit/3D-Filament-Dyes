@@ -182,8 +182,6 @@ for file_name in processed_file_names:
     avg_num_falling_elements = np.mean(falling_num_elements)
     frac_num_falling_elements = avg_num_falling_elements * (3/4)
     min_num_elements = np.min(falling_num_elements)
-    print(frac_num_falling_elements)
-    print(min_num_elements)
 
     if (frac_num_falling_elements > min_num_elements):
         usable_num_falling = int(np.floor(min_num_elements))
@@ -233,7 +231,11 @@ for file_name in processed_file_names:
     png_save_path = f"{save_folder}/{simple_description}.png"
     csv_save_path = f"{save_folder}/Average_{simple_description}.csv"
 
-    plt.figure(figsize=(10, 6))
+    # Initializing a figure
+    plt.figure(figsize=(8, 6))
+    title_size = 13.5
+    label_size = 12
+    tick_size = 11.5
 
     # Plot original stress-strain curves
     for i in range(len(stress_curves)):
@@ -245,10 +247,14 @@ for file_name in processed_file_names:
              label="Average Curve", linewidth=2, color="black", linestyle="--")
 
     # Labeling
-    plt.title(graph_description)
-    plt.xlabel("Strain")
-    plt.ylabel("Stress [MPa]")
-    plt.legend()
+    plt.title(graph_description, fontsize=title_size, fontweight="bold")
+    plt.xlabel("Strain", fontsize=label_size)
+    plt.ylabel("Stress [MPa]", fontsize=label_size)
+
+    # Tick Marks and Legend
+    plt.tick_params(axis='both', which='major', labelsize=tick_size)
+    plt.legend(facecolor="white", edgecolor="black",
+               framealpha=1.0, fontsize=label_size, title_fontsize=title_size)
     plt.grid(True)
     plt.tight_layout()
 

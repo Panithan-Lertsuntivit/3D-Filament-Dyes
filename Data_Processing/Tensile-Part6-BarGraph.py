@@ -29,6 +29,12 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
     spacing = 0.05          # Extra spacing between bars within each group
     bar_colors = ['cornflowerblue', 'coral', 'mediumseagreen']
 
+    # Initializing a figure
+    plt.figure(figsize=(8, 6))
+    title_size = 13.5
+    label_size = 12
+    tick_size = 11.5
+
     # Plot each category
     for i, (temp_num, bar_color) in enumerate(zip(temp_label, bar_colors)):
         # Adjust bar positions with spacing
@@ -38,13 +44,19 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
 
     # Add labels and title
     plt.xticks(x + (width + spacing) * (len(temp_label) - 1) / 2,
-               color_label)  # Center the x-axis ticks
+               color_label, fontsize=tick_size)  # Center the x-axis ticks
     plt.ylim(bottom=y_start)
-    plt.xlabel('Temperature')
-    plt.ylabel(f'{y_label}')
-    plt.title(f'Bar Graph Comparison of Average {y_label}')
+    plt.xlabel('Temperature', fontsize=label_size)
+    plt.ylabel(f'{y_label}', fontsize=label_size)
+    plt.title(f'Bar Graph Comparison of Average {y_label}',
+              fontsize=title_size, fontweight='bold')
+
+    # Tick Marks and Legend
+    # Adjust tick parameters
+    plt.tick_params(axis='both', which='major', labelsize=tick_size)
     plt.legend(title="Temperatures", facecolor="white", edgecolor="black",
-               framealpha=1.0, loc='lower left')
+               framealpha=1.0, loc='lower left',
+               fontsize=label_size, title_fontsize=title_size)
 
     # Show plot
     plt.tight_layout()
