@@ -1,4 +1,4 @@
-# Script is called Tensile-Part6-BarGraph.py
+# Script is called 3Point-Part5-BarGraph.py
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -67,39 +67,32 @@ grouping_order = np.array([
 ])
 
 # Extracting Data from csv file
-csv_path = "Tensile-Results/Table_Categories.csv"
+csv_path = "3Point-Results/Table_Flex_Categories.csv"
 avg_values = pd.read_csv(csv_path)
 
 # Data Labels
 colors = ['Black', 'Blue', 'Green', 'Purple', 'Red']        # X-axis labels
 temperatures = ['200°C', '215°C', '230°C']                  # Y-axis labels
 
-
 # Collecting Data
-[avg_uts, std_uts] \
+[avg_flexmodulus, std_flexmodulus] \
     = collect_from_pandas_dataframe(avg_values, grouping_order,
-                                    'AVG_UTS', 'STD_UTS')
-[avg_youngmodulus, std_youngmodulus] \
+                                    'AVG_FlexModulus',
+                                    'STD_FlexModulus')
+[avg_flex_yieldstrength, std_flex_yieldstrength] \
     = collect_from_pandas_dataframe(avg_values, grouping_order,
-                                    'AVG_YoungModulus', 'STD_YoungModulus')
-[avg_yieldstrength, std_yieldstrength] \
-    = collect_from_pandas_dataframe(avg_values, grouping_order,
-                                    'AVG_Yield_Strength', 'STD_Yield_Strength')
+                                    'AVG_FlexYield_Strength',
+                                    'STD_FlexYield_Strength')
 
-# Making Save Paths
-save_path_uts = "Tensile-Results/BarGraph_UTS.png"
-save_path_youngmodulus = "Tensile-Results/BarGraph_YoungModulus.png"
-save_path_yieldstrength = "Tensile-Results/BarGraph_YieldStrength.png"
+# Making Save Paths and then bar graphs
+save_path_flex_modulus = "3Point-Results/BarGraph_FlexModulus.png"
+save_path_flex_yieldstrength = "3Point-Results/BarGraph_Flex_YieldStrength.png"
 
+bargraph_result(avg_flexmodulus, std_flexmodulus, colors, temperatures,
+                "Flexural Modulus [MPa]",
+                1.3, save_path_flex_modulus)
 
-bargraph_result(avg_uts, std_uts, colors, temperatures,
-                "Ultimate Tensile Strength [MPa]",
-                38, save_path_uts)
-
-bargraph_result(avg_youngmodulus, std_youngmodulus, colors, temperatures,
-                "Young's Modulus [MPa]",
-                750, save_path_youngmodulus)
-
-bargraph_result(avg_yieldstrength, std_yieldstrength, colors, temperatures,
-                "Yield Strength [MPa]",
-                8, save_path_yieldstrength)
+bargraph_result(avg_flex_yieldstrength, std_flex_yieldstrength,
+                colors, temperatures,
+                "Flexural Yield Strength [MPa]",
+                0.018, save_path_flex_yieldstrength)
