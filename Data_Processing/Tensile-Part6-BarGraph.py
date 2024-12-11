@@ -22,7 +22,7 @@ def collect_from_pandas_dataframe(data_frame, order_groups, avg_label, std_label
     return avg, std
 
 def bargraph_result(avg_values, std_values, color_label, temp_label,
-                    y_label, y_start):
+                    y_label, y_start, save_path):
     # Bar Graph Settings
     x = np.arange(len(color_label))  # X positions for the bars
     width = 0.2             # Width of each bar
@@ -43,10 +43,14 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
     plt.xlabel('Temperature')
     plt.ylabel(f'{y_label}')
     plt.title(f'Bar Graph Comparison of Average {y_label}')
-    plt.legend(title="Categories")
+    plt.legend(title="Temperatures", facecolor="white", edgecolor="black",
+               framealpha=1.0, loc='lower left')
 
     # Show plot
     plt.tight_layout()
+    plt.savefig(save_path, dpi=600)
+    print(f"Saved bar graph to: {save_path}")
+
     plt.show()
 
 
@@ -56,11 +60,11 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
 # Order of Groups
 grouping_order = np.array([
     # Temperature of 200C
-    ['Red_200', 'Green_200', 'Blue_200', 'Purple_200', 'Black_200'],
+    ['Black_200', 'Blue_200', 'Green_200', 'Purple_200', 'Red_200'],
     # Temperature of 215C
-    ['Red_215', 'Green_215', 'Blue_215', 'Purple_215', 'Black_215'],
+    ['Black_215', 'Blue_215', 'Green_215', 'Purple_215', 'Red_215'],
     # Temperature of 230C
-    ['Red_230', 'Green_230', 'Blue_230', 'Purple_230', 'Black_230']
+    ['Black_230', 'Blue_230', 'Green_230', 'Purple_230', 'Red_230']
 ])
 
 # Extracting Data from csv file
@@ -68,7 +72,7 @@ csv_path = "Tensile-Results/Table_Categories.csv"
 avg_values = pd.read_csv(csv_path)
 
 # Data Labels
-colors = ['Red', 'Green', 'Blue', 'Purple', 'Black']        # X-axis labels
+colors = ['Black', 'Blue', 'Green', 'Purple', 'Red']        # X-axis labels
 temperatures = ['200°C', '215°C', '230°C']                  # Y-axis labels
 
 
@@ -83,12 +87,20 @@ temperatures = ['200°C', '215°C', '230°C']                  # Y-axis labels
     = collect_from_pandas_dataframe(avg_values, grouping_order,
                                     'AVG_Yield_Strength', 'STD_Yield_Strength')
 
+# Making Save Paths
+save_path_uts = "Tensile-Results/BarGraph_UTS.png"
+save_path_youngmodulus = "Tensile-Results/BarGraph_YoungModulus.png"
+save_path_yieldstrength = "Tensile-Results/BarGraph_YieldStrength.png"
+
 
 bargraph_result(avg_uts, std_uts, colors, temperatures,
-                "Ultimate Tensile Strength [MPa]", 25)
+                "Ultimate Tensile Strength [MPa]",
+                38, save_path_uts)
 
 bargraph_result(avg_youngmodulus, std_youngmodulus, colors, temperatures,
-                "Young's Modulus [MPa]", 0)
+                "Young's Modulus [MPa]",
+                750, save_path_youngmodulus)
 
 bargraph_result(avg_yieldstrength, std_yieldstrength, colors, temperatures,
-                "Yield Strength [MPa]", 0)
+                "Yield Strength [MPa]",
+                8, save_path_yieldstrength)
