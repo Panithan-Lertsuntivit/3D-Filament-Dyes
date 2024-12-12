@@ -21,13 +21,14 @@ def collect_from_pandas_dataframe(data_frame, order_groups, avg_label, std_label
 
     return avg, std
 
-def bargraph_result(avg_values, std_values, color_label, temp_label,
+def bargraph_result(avg_values, std_values, x_tick_labels, legend_labels,
                     y_label, y_start, save_path):
     # Bar Graph Settings
-    x = np.arange(len(color_label))  # X positions for the bars
-    width = 0.2             # Width of each bar
-    spacing = 0.05          # Extra spacing between bars within each group
-    bar_colors = ['cornflowerblue', 'coral', 'mediumseagreen']
+    x = np.arange(len(x_tick_labels))  # X positions for the bars
+    width = 0.145            # Width of each bar
+    spacing = 0.025          # Extra spacing between bars within each group
+    bar_colors = ['gray', 'cornflowerblue', 'mediumseagreen',
+                  'mediumpurple', 'coral']
 
     # Initializing a figure
     plt.figure(figsize=(8, 6))
@@ -36,15 +37,15 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
     tick_size = 11.5
 
     # Plot each category
-    for i, (temp_num, bar_color) in enumerate(zip(temp_label, bar_colors)):
+    for i, (temp_num, bar_color) in enumerate(zip(legend_labels, bar_colors)):
         # Adjust bar positions with spacing
         bar_positions = x + i * (width + spacing)
         plt.bar(bar_positions, avg_values[i], yerr=std_values[i], capsize=5,
                 width=width, label=temp_num, color=bar_color, alpha=0.8)
 
     # Add labels and title
-    plt.xticks(x + (width + spacing) * (len(temp_label) - 1) / 2,
-               color_label, fontsize=tick_size)  # Center the x-axis ticks
+    plt.xticks(x + (width + spacing) * (len(legend_labels) - 1) / 2,
+               x_tick_labels, fontsize=tick_size)  # Center the x-axis ticks
     plt.ylim(bottom=y_start)
     plt.xlabel('Temperature', fontsize=label_size)
     plt.ylabel(f'{y_label}', fontsize=label_size)
@@ -70,12 +71,16 @@ def bargraph_result(avg_values, std_values, color_label, temp_label,
 
 # Order of Groups
 grouping_order = np.array([
-    # Temperature of 200C
-    ['Black_200', 'Blue_200', 'Green_200', 'Purple_200', 'Red_200'],
-    # Temperature of 215C
-    ['Black_215', 'Blue_215', 'Green_215', 'Purple_215', 'Red_215'],
-    # Temperature of 230C
-    ['Black_230', 'Blue_230', 'Green_230', 'Purple_230', 'Red_230']
+    # Black Filament
+    ['Black_200', 'Black_215', 'Black_230'],
+    # Blue Filament
+    ['Blue_200', 'Blue_215', 'Blue_230'],
+    # Green Filament
+    ['Green_200', 'Green_215', 'Green_230'],
+    # Purple Filament
+    ['Purple_200', 'Purple_215', 'Purple_230'],
+    # Red Filament
+    ['Red_200', 'Red_215', 'Red_230'],
 ])
 
 # Extracting Data from csv file
@@ -100,11 +105,11 @@ temperatures = ['200°C', '215°C', '230°C']                  # Y-axis labels
 save_path_flex_modulus = "3Point-Results/BarGraph_FlexModulus.png"
 save_path_flex_yieldstrength = "3Point-Results/BarGraph_Flex_YieldStrength.png"
 
-bargraph_result(avg_flexmodulus, std_flexmodulus, colors, temperatures,
+bargraph_result(avg_flexmodulus, std_flexmodulus, temperatures, colors,
                 "Flexural Modulus [MPa]",
                 1.3, save_path_flex_modulus)
 
 bargraph_result(avg_flex_yieldstrength, std_flex_yieldstrength,
-                colors, temperatures,
+                temperatures, colors,
                 "Flexural Yield Strength [MPa]",
                 0.018, save_path_flex_yieldstrength)
