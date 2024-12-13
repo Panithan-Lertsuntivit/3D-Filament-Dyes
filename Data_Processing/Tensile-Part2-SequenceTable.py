@@ -173,6 +173,7 @@ for file_name in processed_file_names:
     category_table.loc[category_counter, 'AVG_Yield_Strength'] \
         = np.average(yield_strength_array)
 
+    # Taking the Sample Standard Deviation (Delta degree of freedom = 1)
     category_table.loc[category_counter, 'STD_UTS'] \
         = np.std(uts_array, ddof=1)
     category_table.loc[category_counter, 'STD_YoungModulus'] \
@@ -196,4 +197,3 @@ category_table.to_csv(category_output_file, index=False)
 
 print(f"Saved sequence table to: {sequence_output_file} \n")
 print(f"Saved category table to: {category_output_file} \n")
-

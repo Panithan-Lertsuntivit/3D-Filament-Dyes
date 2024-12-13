@@ -113,3 +113,11 @@ bargraph_result(avg_flex_yieldstrength, std_flex_yieldstrength,
                 temperatures, colors,
                 "Flexural Yield Strength [MPa]",
                 0.018, save_path_flex_yieldstrength)
+
+
+print(avg_flex_yieldstrength)
+print("\nStandard Deviation Values: Flexural Yield Strength\n")
+print(np.std(avg_flex_yieldstrength, axis=0))
+
+print("\nStandard Deviation Values: Flexural Modulus\n")
+print(np.std(avg_flexmodulus, axis=0))

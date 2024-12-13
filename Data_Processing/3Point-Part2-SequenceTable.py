@@ -161,6 +161,7 @@ for file_name in processed_file_names:
     category_table.loc[category_counter, 'AVG_FlexYield_Strength'] \
         = np.average(flex_yield_strength_array)
 
+    # Taking the Sample Standard Deviation (Delta degree of freedom = 1)
     category_table.loc[category_counter, 'STD_FlexModulus'] \
         = np.std(flex_modulus_array, ddof=1)
     category_table.loc[category_counter, 'STD_FlexYield_Strength'] \

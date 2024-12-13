@@ -9,19 +9,20 @@ def collect_from_pandas_dataframe(data_frame, order_groups, avg_label, std_label
     [rows, columns] = order_groups.shape
 
     # Predefining numpy arrays
-    avg = np.zeros((rows, columns))
-    std = np.zeros((rows, columns))
+    avg_arrays = np.zeros((rows, columns))
+    std_arrays = np.zeros((rows, columns))
 
     for i in range(rows):
         for j in range(columns):
-            avg[i, j] = data_frame.loc[data_frame['Category']
+            avg_arrays[i, j] = data_frame.loc[data_frame['Category']
                                        == order_groups[i, j], avg_label].iloc[0]
-            std[i, j] = data_frame.loc[data_frame['Category']
+            std_arrays[i, j] = data_frame.loc[data_frame['Category']
                                        == order_groups[i, j], std_label].iloc[0]
 
-    return avg, std
+    return avg_arrays, std_arrays
 
-def bargraph_result(avg_values, std_values, x_tick_labels, legend_labels,
+
+def bargraph_result_table(avg_values, std_values, x_tick_labels, legend_labels,
                     y_label, y_start, save_path):
     # Bar Graph Settings
     x = np.arange(len(x_tick_labels))  # X positions for the bars
@@ -67,6 +68,24 @@ def bargraph_result(avg_values, std_values, x_tick_labels, legend_labels,
     plt.show()
 
 
+def resulting_tables(values_array, save_location):
+
+    table_val = np.rot90(values_array)
+    table_val[[0, 2]] = table_val[[2, 0]]
+    temp_group_std = np.std(table_val, axis=1)
+
+    table_result = pd.DataFrame({' ': [200, 215, 230],
+                                 'Black': table_val[:, 0],
+                                 'Blue': table_val[:, 1],
+                                 'Green': table_val[:, 2],
+                                 'Purple': table_val[:, 3],
+                                 'Red': table_val[:, 4],
+                                 'Temperature STD': temp_group_std})
+
+    table_result.to_csv(save_location)
+    print(f"Saved table to: {save_location}")
+
+
 ''' End of Functions '''
 
 # Order of Groups
@@ -104,19 +123,27 @@ temperatures = ['200°C', '215°C', '230°C']                  # Y-axis labels
                                     'AVG_Yield_Strength', 'STD_Yield_Strength')
 
 # Making Save Paths
-save_path_uts = "Tensile-Results/BarGraph_UTS.png"
-save_path_youngmodulus = "Tensile-Results/BarGraph_YoungModulus.png"
-save_path_yieldstrength = "Tensile-Results/BarGraph_YieldStrength.png"
+folder_name = "Tensile-Results"
+png_path_uts = f"{folder_name}/BarGraph_UTS.png"
+png_path_youngmodulus = f"{folder_name}/BarGraph_YoungModulus.png"
+png_path_yieldstrength = f"{folder_name}/BarGraph_YieldStrength.png"
 
+csv_path_uts = f"{folder_name}/Table_UTS.csv"
+csv_path_youngmodulus = f"{folder_name}/Table_YoungModulus.csv"
+csv_path_yieldstrength = f"{folder_name}/Table_YieldStrength.csv"
 
-bargraph_result(avg_uts, std_uts, temperatures, colors,
+bargraph_result_table(avg_uts, std_uts, temperatures, colors,
                 "Ultimate Tensile Strength [MPa]",
-                33, save_path_uts)
+                33, png_path_uts)
 
-bargraph_result(avg_youngmodulus, std_youngmodulus, temperatures, colors,
+bargraph_result_table(avg_youngmodulus, std_youngmodulus, temperatures, colors,
                 "Young's Modulus [MPa]",
-                720, save_path_youngmodulus)
+                720, png_path_youngmodulus)
 
-bargraph_result(avg_yieldstrength, std_yieldstrength, temperatures, colors,
+bargraph_result_table(avg_yieldstrength, std_yieldstrength, temperatures, colors,
                 "Yield Strength [MPa]",
-                7, save_path_yieldstrength)
+                7, png_path_yieldstrength)
+
+resulting_tables(avg_uts, csv_path_uts)
+resulting_tables(avg_youngmodulus, csv_path_youngmodulus)
+resulting_tables(avg_yieldstrength, csv_path_yieldstrength)
