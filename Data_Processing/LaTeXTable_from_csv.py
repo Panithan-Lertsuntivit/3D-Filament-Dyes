@@ -77,14 +77,24 @@ csv_paths = [
     "Tensile-Results/Table_Categories.csv",
     "Tensile-Results/Table_Sequences.csv",
     "3Point-Results/Table_Flex_Categories.csv",
-    "3Point-Results/Table_Flex_Sequences.csv"
+    "3Point-Results/Table_Flex_Sequences.csv",
+    "3Point-Results/Table_FlexModulus.csv",
+    "3Point-Results/Table_FlexYieldStrength.csv",
+    "Tensile-Results/Table_UTS.csv",
+    "Tensile-Results/Table_YieldStrength.csv",
+    "Tensile-Results/Table_YoungModulus.csv",
 ]
 
 txt_paths = [
     "Tensile-Results/Table_Categories.txt",
     "Tensile-Results/Table_Sequences.txt",
     "3Point-Results/Table_Flex_Categories.txt",
-    "3Point-Results/Table_Flex_Sequences.txt"
+    "3Point-Results/Table_Flex_Sequences.txt",
+    "3Point-Results/Table_FlexModulus.txt",
+    "3Point-Results/Table_FlexYieldStrength.txt",
+    "Tensile-Results/Table_UTS.txt",
+    "Tensile-Results/Table_YieldStrength.txt",
+    "Tensile-Results/Table_YoungModulus.txt",
 ]
 
 # For loop iteration

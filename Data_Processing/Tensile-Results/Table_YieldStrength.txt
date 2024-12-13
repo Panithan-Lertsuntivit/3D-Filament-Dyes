@@ -1,0 +1,18 @@
+\begin{table}[htbp] 
+	\centering 
+	\captionsetup{skip=10pt} % Space between caption and table 
+	\caption{ } 
+
+	\begin{tabular}{|c|c|c|c|c|c|c|c|} 
+		\hline 
+		% LaTeX doesn't allow for underscores (_), please change it before compiling 
+		\textbf{Unnamed: 0} & \textbf{ } & \textbf{Black} & \textbf{Blue} & \textbf{Green} & \textbf{Purple} & \textbf{Red} & \textbf{Temperature STD} \\ 
+		\hline 
+		0 & 200 & 29.177 & 29.782 & 29.086 & 30.224 & 29.758 & 0.422 \\ 
+		\hline 
+		1 & 215 & 23.087 & 20.877 & 21.173 & 22.094 & 23.575 & 1.048 \\ 
+		\hline 
+		2 & 230 & 19.688 & 19.555 & 19.373 & 18.912 & 20.075 & 0.382 \\ 
+		\hline 
+	\end{tabular} 
+\end{table} 
