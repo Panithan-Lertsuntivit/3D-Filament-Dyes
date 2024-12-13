@@ -74,7 +74,7 @@ tester = {
                   'Purple_230C', 'Red_230C'],
 }
 
-color_order = ['black', 'dodgerblue', 'forestgreen', 'darkviolet', 'crimson']
+color_order = ['black', 'royalblue', 'seagreen', 'darkorchid', 'orangered']
 
 # Predefine Pandas Dataframe
 avg_curve_props = pd.DataFrame()
