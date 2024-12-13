@@ -55,7 +55,7 @@ def bargraph_result(avg_values, std_values, x_tick_labels, legend_labels,
     # Tick Marks and Legend
     # Adjust tick parameters
     plt.tick_params(axis='both', which='major', labelsize=tick_size)
-    plt.legend(title="Temperatures", facecolor="white", edgecolor="black",
+    plt.legend(title="Colors", facecolor="white", edgecolor="black",
                framealpha=1.0, loc='lower left',
                fontsize=label_size, title_fontsize=title_size)
 
